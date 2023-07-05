@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequiredArgsConstructor
 class HomeController {
-    @Value("\${spring.OAuth2.google.client_id}")
-    private lateinit var application_name: String
     @GetMapping("/")
     fun hello(): String {
-        return application_name
+        return "home controller"
     }
 }

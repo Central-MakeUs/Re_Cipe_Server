@@ -114,9 +114,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.test {
-    finalizedBy("jacocoTestReport")
-}
+//tasks.test {
+//    finalizedBy("jacocoTestReport")
+//}
 
 tasks.jacocoTestReport {
     reports {
