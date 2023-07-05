@@ -23,7 +23,6 @@ spring:
   config:
     activate:
       on-profile: local
-    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: create
@@ -52,12 +51,6 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: recipe
 cloud:
   aws:
     stack:
@@ -83,7 +76,6 @@ spring:
   config:
     activate:
       on-profile: dev
-    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: ${jpa.ddl_auto}
@@ -105,12 +97,6 @@ spring:
     port: ${redis.port}
 server:
   port: ${spring.server.port}
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: recipe
 cloud:
   aws:
     stack:
@@ -121,32 +107,13 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-    org.springframework.orm: TRACE
-    org.springframework.transaction: TRACE
-    com.zaxxer.hikari: TRACE
-    com.mysql.cj.jdbc: TRACE
-  slack:
-    webhook-uri-dev-paid: ${slack.paid_channel_uri}
-    webhook-uri-dev-error: ${slack.error_channel_uri}
-  file:
-    path: /home/ubuntu
-  config: classpath:logback-spring.xml
 swagger:
-  url: https://rec1pe.store
+  url: http://localhost:8080
 ---
 spring:
   config:
     activate:
       on-profile: prod
-    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: ${jpa.ddl_auto}
@@ -168,12 +135,6 @@ spring:
     port: ${redis.port}
 server:
   port: ${spring.server.port}
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: recipe
 cloud:
   aws:
     stack:
@@ -184,23 +145,5 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-    org.springframework.orm: TRACE
-    org.springframework.transaction: TRACE
-    com.zaxxer.hikari: TRACE
-    com.mysql.cj.jdbc: TRACE
-  slack:
-    webhook-uri-dev-paid: ${slack.paid_channel_uri}
-    webhook-uri-dev-error: ${slack.error_channel_uri}
-  file:
-    path: /home/ubuntu
-  config: classpath:logback-spring.xml
 swagger:
-  url: https://rec1pe.store
+  url: http://localhost:8080
