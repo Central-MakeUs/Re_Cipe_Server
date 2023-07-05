@@ -51,10 +51,6 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-cloud:
-  aws:
-    stack:
-      auto: false
 jwt:
   secret: my-best-recipe-12312312312312-2312312313
   access-token-expiry: 1296000000
@@ -97,10 +93,6 @@ spring:
     port: ${redis.port}
 server:
   port: ${spring.server.port}
-cloud:
-  aws:
-    stack:
-      auto: false
 jwt:
   secret: ${jwt.secret}
   access-token-expiry: ${jwt.access.expire}
