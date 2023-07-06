@@ -23,6 +23,7 @@ spring:
   config:
     activate:
       on-profile: local
+    import: 'aws-parameterstore:'
   jpa:
     hibernate:
       ddl-auto: create
@@ -45,12 +46,21 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
-
   flyway:
     enabled: false
   redis:
     host: 127.0.0.1
     port: 6379
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: recipe
+cloud:
+  aws:
+    stack:
+      auto: false
 jwt:
   secret: my-best-recipe-12312312312312-2312312313
   access-token-expiry: 1296000000
@@ -93,6 +103,16 @@ spring:
     port: ${redis.port}
 server:
   port: ${spring.server.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: recipe
+cloud:
+  aws:
+    stack:
+      auto: false
 jwt:
   secret: ${jwt.secret}
   access-token-expiry: ${jwt.access.expire}
@@ -127,6 +147,12 @@ spring:
     port: ${redis.port}
 server:
   port: ${spring.server.port}
+aws:
+  paramstore:
+    enabled: true
+    prefix: /config
+    profile-separator: _
+    name: recipe
 cloud:
   aws:
     stack:
