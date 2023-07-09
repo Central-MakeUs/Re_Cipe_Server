@@ -8,11 +8,11 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    owner: ec2-user
+    owner: recipe-user
     group: ec2-user
 
 hooks:
   ApplicationStart:
     - location: scripts/deploy.sh
-      timeout: 60
-      runas: ec2-user
+      timeout: 120
+      runas: recipe-user
