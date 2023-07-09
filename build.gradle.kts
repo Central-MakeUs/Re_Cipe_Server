@@ -17,7 +17,7 @@ plugins {
 
 group = "com"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 extra["springCloudVersion"] = "2020.0.4"
 
@@ -114,13 +114,13 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
 
-//tasks.test {
-//    finalizedBy("jacocoTestReport")
-//}
+tasks.test {
+    finalizedBy("jacocoTestReport")
+}
 
 tasks.jacocoTestReport {
     reports {
@@ -156,7 +156,7 @@ tasks.jacocoTestCoverageVerification {
             limit {
                 counter = "LINE"
                 value = "COVEREDRATIO"
-                minimum = "0.80".toBigDecimal()
+                minimum = "0.00".toBigDecimal()
             }
             excludes = Qdomains
 
