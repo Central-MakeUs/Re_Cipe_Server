@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.jvm.tasks.Jar
+import org.jetbrains.kotlin.incremental.ChangesCollector.Companion.getNonPrivateNames
 
 plugins {
     id("org.springframework.boot") version "2.7.2"
@@ -62,6 +64,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
     // Database
+    runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
 
     // Querydsl
@@ -89,8 +92,9 @@ dependencies {
     // String-Utils
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
-    // flyway
-    implementation("org.flywaydb:flyway-core")
+    // Slack
+    implementation("net.gpedro.integrations.slack:slack-webhook:1.4.0")
+    implementation("com.github.maricn:logback-slack-appender:1.6.1")
 
     // Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -152,7 +156,7 @@ tasks.jacocoTestCoverageVerification {
             limit {
                 counter = "LINE"
                 value = "COVEREDRATIO"
-                minimum = "0.00".toBigDecimal()
+                minimum = "0.80".toBigDecimal()
             }
             excludes = Qdomains
 

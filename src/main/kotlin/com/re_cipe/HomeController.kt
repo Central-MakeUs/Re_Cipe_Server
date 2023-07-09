@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequiredArgsConstructor
-class HomeController {
+class HomeController(@Value("\${jwt.secret}") val jwtString: String) {
+
     @GetMapping("/")
     fun hello(): String {
-        return "home controller"
+        return jwtString
     }
 }
