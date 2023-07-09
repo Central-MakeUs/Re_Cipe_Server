@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequiredArgsConstructor
-class HomeController(@Value("\${jwt.secret}") val jwtString: String) {
-
+class HomeController() {
     @GetMapping("/")
     fun hello(): String {
-        return jwtString
+        return "recipe backend server"
     }
 }
