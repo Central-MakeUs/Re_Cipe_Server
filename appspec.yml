@@ -1,5 +1,6 @@
 version: 0.0
 os: linux
+
 files:
   - source:  /
     destination: /home/ubuntu/action
@@ -10,10 +11,13 @@ permissions:
     pattern: "**"
     owner: root
     group: root
-    mode: 755
 
 hooks:
+  AfterInstall:
+    - location: scripts/stop.sh
+      timeout: 60
+      runas: root
   ApplicationStart:
-    - location: scripts/deploy.sh
-      timeout: 120
+    - location: scripts/start.sh
+      timeout: 60
       runas: root
