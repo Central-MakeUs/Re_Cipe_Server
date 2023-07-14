@@ -37,6 +37,14 @@ spring:
     url: jdbc:h2:tcp://localhost/~/recipe;MODE=MYSQL
     username: sa
     password:
+  OAuth2:
+    google:
+      client_id: ${oauth2.google.client-id}
+      client_secret: ${oauth2.google.client-secret}
+      url:
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+        login: https://accounts.google.com/o/oauth2/v2/auth
   flyway:
     enabled: false
   redis:
@@ -82,6 +90,14 @@ spring:
     password: ${jdbc.password}
     hikari:
       connection-timeout: 200000
+  OAuth2:
+    google:
+      client_id: ${oauth2.google.client-id}
+      client_secret: ${oauth2.google.client-secret}
+      url:
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+        login: https://accounts.google.com/o/oauth2/v2/auth
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -130,6 +146,14 @@ spring:
     password: ${jdbc.password}
     hikari:
       connection-timeout: 200000
+  OAuth2:
+    google:
+      client_id: ${oauth2.google.client-id}
+      client_secret: ${oauth2.google.client-secret}
+      url:
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+        login: https://accounts.google.com/o/oauth2/v2/auth
   flyway:
     enabled: true
     baseline-on-migrate: true

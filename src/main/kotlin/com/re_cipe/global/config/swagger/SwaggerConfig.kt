@@ -1,5 +1,6 @@
 package com.re_cipe.global.config.swagger
 
+import com.re_cipe.global.annotation.CurrentMember
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties
@@ -12,6 +13,7 @@ import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.util.StringUtils
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
@@ -27,7 +29,7 @@ class SwaggerConfig {
 
     @Bean
     fun swaggerApi(): Docket = Docket(DocumentationType.OAS_30)
-//        .ignoredParameterTypes(AuthenticationPrincipal::class.java)
+        .ignoredParameterTypes(AuthenticationPrincipal::class.java, CurrentMember::class.java)
         .servers(serverInfo())
         .useDefaultResponseMessages(true)
         .apiInfo(apiInfo())
