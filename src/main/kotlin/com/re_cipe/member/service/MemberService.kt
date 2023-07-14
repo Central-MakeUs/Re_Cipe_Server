@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class MemberService(private val memberRepository: MemberRepository) {
+    fun findByEmail(email: String) = memberRepository.findByEmail(email)
     fun existsByNickname(nicknameDuplicationRequest: NicknameDuplicationRequest): NicknameDuplicationResponse {
         if (!isValid(nicknameDuplicationRequest.nickname)) {
             throw BusinessException(ErrorCode.INVALID_NICKNAME)

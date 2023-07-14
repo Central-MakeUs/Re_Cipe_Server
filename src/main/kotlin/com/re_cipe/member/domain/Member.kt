@@ -17,7 +17,9 @@ class Member constructor(
 
     val profileImage: String,
 
-    val nickname: String
+    val nickname: String,
+
+    val provider: Provider
 ) : BaseEntity() {
 
 }
