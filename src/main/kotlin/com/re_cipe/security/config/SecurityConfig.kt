@@ -27,8 +27,8 @@ class SecurityConfig(
         registry.addInterceptor(jwtInterceptor)
             .addPathPatterns("/api/**")
             .excludePathPatterns(
-                "/api/v1/auth/signin",
-                "/api/v1/auth/signup",
+                "/api/v1/auth/google/signin",
+                "/api/v1/auth/google/signup",
                 "/api/v1/auth/refresh",
                 "/swagger-ui/index.html"
             )
