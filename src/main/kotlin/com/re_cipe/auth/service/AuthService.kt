@@ -31,8 +31,7 @@ class AuthService(
     private val accessTokenExpiry: Long = 0
 
     @Transactional
-    fun googleSignIn(code: String): GoogleSignInResponse {
-        val token = oAuthService.requestToken(code)
+    fun googleSignIn(token: String): GoogleSignInResponse {
         val email = oAuthService.getUserEmail(token)
 
         val isExist = memberRepository.existsByEmail(email)
