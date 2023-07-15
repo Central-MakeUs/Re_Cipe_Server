@@ -32,7 +32,7 @@ class AuthController(
     @ApiOperation(value = "구글 회원가입", notes = "구글 회원가입을 진행합니다.")
     @PostMapping("/google/signup")
     fun googleSignup(
-        @ApiParam(value = "구글 토큰", required = true)
+        @ApiParam(value = "구글 Access Token", required = true)
         @RequestHeader(value = "auth-token") token: String,
         @RequestBody googleSignUpRequest: GoogleSignUpRequest
     ): ApiResponse<JwtTokens> {
