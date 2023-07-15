@@ -19,6 +19,7 @@ class Member constructor(
 
     val nickname: String,
 
+    @Enumerated(EnumType.STRING)
     val provider: Provider
 ) : BaseEntity() {
 

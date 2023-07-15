@@ -80,11 +80,9 @@ class GoogleOAuthServiceImpl(
         }
         val email = objectMapper.readTree(response.body)
             .get("email").asText()
-        val name = objectMapper.readTree(response.body)
-            .get("name").asText()
         val picture = objectMapper.readTree(response.body)
             .get("picture").asText()
-        return UserInfo(email = email, name = name, picture = picture)
+        return UserInfo(email = email, picture = picture)
     }
 
     private fun buildProfileRequest(token: String): HttpEntity<*> {
