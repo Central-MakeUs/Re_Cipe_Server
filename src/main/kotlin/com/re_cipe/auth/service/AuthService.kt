@@ -31,7 +31,7 @@ class AuthService(
     private val accessTokenExpiry: Long = 0
 
     @Transactional
-    fun signIn(code: String): GoogleSignInResponse {
+    fun googleSignIn(code: String): GoogleSignInResponse {
         val token = oAuthService.requestToken(code)
         val email = oAuthService.getUserEmail(token)
 
@@ -46,7 +46,7 @@ class AuthService(
     }
 
     @Transactional
-    fun signup(token: String, googleSignUpRequest: GoogleSignUpRequest): JwtTokens {
+    fun googleSignup(token: String, googleSignUpRequest: GoogleSignUpRequest): JwtTokens {
         val userInfo = oAuthService.getUserInfo(token)
         join(email = userInfo.email, picture = userInfo.picture, googleSignUpRequest = googleSignUpRequest)
 

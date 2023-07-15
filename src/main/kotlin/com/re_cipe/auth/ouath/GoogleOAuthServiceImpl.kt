@@ -30,6 +30,9 @@ class GoogleOAuthServiceImpl(
     @Value("\${spring.OAuth2.google.client_secret}")
     private lateinit var GOOGLE_CLIENT_SECRET: String
 
+    @Value("\${spring.OAuth2.google.url.redirect}")
+    private lateinit var GOOGLE_REDIRECT_URI: String
+
     @Value("\${spring.OAuth2.google.url.profile}")
     private lateinit var GOOGLE_PROFILE_URI: String
 
@@ -96,6 +99,7 @@ class GoogleOAuthServiceImpl(
             "code" to authCode,
             "client_id" to GOOGLE_CLIENT_ID,
             "client_secret" to GOOGLE_CLIENT_SECRET,
+            "redirect_uri" to GOOGLE_REDIRECT_URI,
             "grant_type" to "authorization_code"
         )
     }

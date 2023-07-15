@@ -26,7 +26,7 @@ class AuthController(
         @ApiParam(value = "구글 토큰", required = true)
         @RequestHeader(value = "auth-token") code: String
     ): ApiResponse<GoogleSignInResponse> {
-        return ApiResponse.success(authService.signIn(code))
+        return ApiResponse.success(authService.googleSignIn(code))
     }
 
     @ApiOperation(value = "구글 회원가입", notes = "구글 회원가입을 진행합니다.")
@@ -36,7 +36,7 @@ class AuthController(
         @RequestHeader(value = "auth-token") token: String,
         @RequestBody googleSignUpRequest: GoogleSignUpRequest
     ): ApiResponse<JwtTokens> {
-        return ApiResponse.success(authService.signup(token, googleSignUpRequest))
+        return ApiResponse.success(authService.googleSignup(token, googleSignUpRequest))
     }
 
     @ApiOperation(value = "JWT 발급 새로 고침", notes = "refreshToken을 사용하여 JWT를 새로고침 합니다.")
@@ -48,7 +48,9 @@ class AuthController(
     @ApiOperation(value = "로그아웃 진행", notes = "로그아웃을 진행합니다.")
     @PostMapping("/logout")
     fun logout(
+        @ApiParam(value = "Access Token", required = true)
         @RequestHeader(value = "Authorization") accessToken: String,
+        @ApiParam(value = "Refresh Token", required = true)
         @RequestHeader(value = "Refresh-Token") refreshToken: String
     ): ApiResponse<Nothing> {
         authService.logout(accessToken, refreshToken)

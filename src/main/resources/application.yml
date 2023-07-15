@@ -42,6 +42,7 @@ spring:
       client_id: ${oauth2.google.client-id}
       client_secret: ${oauth2.google.client-secret}
       url:
+        redirect: ${oauth2.google.url.redirect}
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
@@ -95,6 +96,7 @@ spring:
       client_id: ${oauth2.google.client-id}
       client_secret: ${oauth2.google.client-secret}
       url:
+        redirect: ${oauth2.google.url.redirect}
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
@@ -151,6 +153,7 @@ spring:
       client_id: ${oauth2.google.client-id}
       client_secret: ${oauth2.google.client-secret}
       url:
+        redirect: ${oauth2.google.url.redirect}
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
