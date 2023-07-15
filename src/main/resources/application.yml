@@ -107,6 +107,7 @@ spring:
     host: ${redis.host}
     port: ${redis.port}
     password: ${redis.password}
+    username: ${redis.username}
 server:
   port: ${spring.server.port}
 aws:
@@ -164,6 +165,7 @@ spring:
     host: ${redis.host}
     port: ${redis.port}
     password: ${redis.password}
+    username: ${redis.username}
 server:
   port: ${spring.server.port}
 

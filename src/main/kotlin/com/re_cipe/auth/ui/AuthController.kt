@@ -23,7 +23,7 @@ class AuthController(
     @ApiOperation(value = "구글 로그인", notes = "구글 로그인을 진행합니다.")
     @PostMapping("/google/signin")
     fun googleSignIn(
-        @ApiParam(value = "구글 토큰", required = true)
+        @ApiParam(value = "구글 Access Token", required = true)
         @RequestHeader(value = "auth-token") code: String
     ): ApiResponse<GoogleSignInResponse> {
         return ApiResponse.success(authService.googleSignIn(code))
