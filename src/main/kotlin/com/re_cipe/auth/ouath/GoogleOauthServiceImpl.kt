@@ -16,9 +16,9 @@ import org.springframework.web.client.RestTemplate
 
 @Service
 @Transactional(readOnly = true)
-class GoogleOAuthServiceImpl(
+class GoogleOauthServiceImpl(
     private val restTemplate: RestTemplate,
-) : OAuthService {
+) : GoogleOauthService {
     val objectMapper: ObjectMapper = ObjectMapper()
 
     @Value("\${spring.OAuth2.google.url.token}")
@@ -49,7 +49,7 @@ class GoogleOAuthServiceImpl(
             throw BusinessException(ErrorCode.OAUTH2_FAIL_EXCEPTION)
         }
         return objectMapper
-            .readValue(response.body, GoogleOAuthToken::class.java)
+            .readValue(response.body, GoogleOauthToken::class.java)
             .access_token!!
     }
 

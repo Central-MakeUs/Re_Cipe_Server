@@ -1,6 +1,6 @@
 package com.re_cipe.auth.ouath
 
-data class GoogleOAuthToken(
+data class GoogleOauthToken(
     val access_token: String? = null,
     val expires_in: Int? = 0,
     val scope: String? = null,
