@@ -30,6 +30,7 @@ class SecurityConfig(
                 "/api/v1/auth/google/signin",
                 "/api/v1/auth/google/signup",
                 "/api/v1/auth/refresh",
+                "/api/v1/users/verify-nickname",
                 "/swagger-ui/index.html"
             )
     }

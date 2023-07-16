@@ -1,7 +1,7 @@
 package com.re_cipe.auth.service
 
 
-import com.re_cipe.auth.ouath.OAuthService
+import com.re_cipe.auth.ouath.GoogleOauthService
 import com.re_cipe.auth.ui.dto.GoogleSignInResponse
 import com.re_cipe.auth.ui.dto.GoogleSignUpRequest
 import com.re_cipe.exception.BusinessException
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class AuthService(
     private val memberRepository: MemberRepository,
-    private val oAuthService: OAuthService,
+    private val googleOauthService: GoogleOauthService,
     private val jwtService: JwtService,
     private val redisService: RedisService
 ) {
@@ -32,7 +32,7 @@ class AuthService(
 
     @Transactional
     fun googleSignIn(token: String): GoogleSignInResponse {
-        val email = oAuthService.getUserEmail(token)
+        val email = googleOauthService.getUserEmail(token)
 
         val isExist = memberRepository.existsByEmail(email)
         if (!isExist) {
@@ -46,7 +46,7 @@ class AuthService(
 
     @Transactional
     fun googleSignup(token: String, googleSignUpRequest: GoogleSignUpRequest): JwtTokens {
-        val userInfo = oAuthService.getUserInfo(token)
+        val userInfo = googleOauthService.getUserInfo(token)
         join(email = userInfo.email, picture = userInfo.picture, googleSignUpRequest = googleSignUpRequest)
 
         val tokens = jwtService.issue(userInfo.email)
