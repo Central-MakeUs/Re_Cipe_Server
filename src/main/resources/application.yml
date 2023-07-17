@@ -52,6 +52,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: qwer
+    username: 1234
 aws:
   paramstore:
     enabled: true

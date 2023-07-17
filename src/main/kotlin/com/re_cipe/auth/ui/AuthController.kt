@@ -1,8 +1,7 @@
 package com.re_cipe.auth.ui
 
 import com.re_cipe.auth.service.AuthService
-import com.re_cipe.auth.ui.dto.GoogleSignInResponse
-import com.re_cipe.auth.ui.dto.GoogleSignUpRequest
+import com.re_cipe.auth.ui.dto.*
 import com.re_cipe.global.annotation.CurrentMember
 import com.re_cipe.global.response.ApiResponse
 import com.re_cipe.jwt.util.JwtTokens
@@ -37,6 +36,24 @@ class AuthController(
         @RequestBody googleSignUpRequest: GoogleSignUpRequest
     ): ApiResponse<JwtTokens> {
         return ApiResponse.success(authService.googleSignup(token, googleSignUpRequest))
+    }
+
+    @ApiOperation(value = "애플 로그인", notes = "애플 로그인을 진행합니다.")
+    @PostMapping("/apple/signin")
+    fun appleSignIn(
+        @ApiParam(value = " 토큰", required = true)
+        @RequestBody appleSignInRequest: AppleSignInRequest
+    ): ApiResponse<AppleSignInResponse> {
+        return ApiResponse.success(authService.appleSignIn(appleSignInRequest))
+    }
+
+    @ApiOperation(value = "애플 회원가입", notes = "애플 회원가입을 진행합니다.")
+    @PostMapping("/apple/signup")
+    fun appleSignUp(
+        @ApiParam(value = "애플 identify token", required = true)
+        @RequestBody appleSignUpRequest: AppleSignUpRequest
+    ): ApiResponse<JwtTokens> {
+        return ApiResponse.success(authService.appleSignup(appleSignUpRequest))
     }
 
     @ApiOperation(value = "JWT 발급 새로 고침", notes = "refreshToken을 사용하여 JWT를 새로고침 합니다.")
