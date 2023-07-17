@@ -19,7 +19,7 @@ group = "com"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-extra["springCloudVersion"] = "2020.0.4"
+extra["springCloudVersion"] = "2021.0.5"
 
 repositories {
     mavenCentral()
@@ -79,6 +79,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.2")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
+    // feign
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.20")

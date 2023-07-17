@@ -1,9 +1,9 @@
 package com.re_cipe.auth.service
 
 
+import com.re_cipe.auth.ouath.AppleClient
 import com.re_cipe.auth.ouath.GoogleOauthService
-import com.re_cipe.auth.ui.dto.GoogleSignInResponse
-import com.re_cipe.auth.ui.dto.GoogleSignUpRequest
+import com.re_cipe.auth.ui.dto.*
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
 import com.re_cipe.global.redis.RedisService
@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
 @Service
 @Transactional(readOnly = true)
 class AuthService(
     private val memberRepository: MemberRepository,
     private val googleOauthService: GoogleOauthService,
+    private val appleClient: AppleClient,
     private val jwtService: JwtService,
     private val redisService: RedisService
 ) {
@@ -47,11 +49,37 @@ class AuthService(
     @Transactional
     fun googleSignup(token: String, googleSignUpRequest: GoogleSignUpRequest): JwtTokens {
         val userInfo = googleOauthService.getUserInfo(token)
-        join(email = userInfo.email, picture = userInfo.picture, googleSignUpRequest = googleSignUpRequest)
+        join(email = userInfo.email, googleSignUpRequest = googleSignUpRequest)
 
         val tokens = jwtService.issue(userInfo.email)
         storeRefresh(tokens, userInfo.email)
         return tokens
+    }
+
+    @Transactional
+    fun appleSignIn(appleSignInRequest: AppleSignInRequest): AppleSignInResponse {
+        val response: ApplePublicKeyResponse = appleClient.getApplePublicKey()
+        jwtService.getSubjectByAppleToken(appleSignInRequest.idToken, response)
+
+        val isExist = memberRepository.existsByEmail(appleSignInRequest.email)
+        if (!isExist) {
+            return AppleSignInResponse(false, JwtTokens(accessToken = appleSignInRequest.idToken))
+        }
+
+        val tokens = jwtService.issue(appleSignInRequest.email)
+        storeRefresh(tokens, appleSignInRequest.email)
+        return AppleSignInResponse(true, tokens);
+    }
+
+    @Transactional
+    fun appleSignup(appleSignUpRequest: AppleSignUpRequest): JwtTokens {
+        val response: ApplePublicKeyResponse = appleClient.getApplePublicKey()
+        jwtService.getSubjectByAppleToken(appleSignUpRequest.idToken, response)
+        join(appleSignUpRequest)
+
+        val tokens = jwtService.issue(appleSignUpRequest.email)
+        storeRefresh(tokens, appleSignUpRequest.email)
+        return tokens;
     }
 
     @Transactional
@@ -85,13 +113,22 @@ class AuthService(
         return true
     }
 
-    private fun join(email: String, picture: String, googleSignUpRequest: GoogleSignUpRequest) {
+    private fun join(email: String, googleSignUpRequest: GoogleSignUpRequest) {
         memberRepository.save(
             Member(
                 email = email,
                 nickname = googleSignUpRequest.nickname,
-                profileImage = picture,
                 provider = Provider.GOOGLE
+            )
+        )
+    }
+
+    private fun join(appleSignUpRequest: AppleSignUpRequest) {
+        memberRepository.save(
+            Member(
+                email = appleSignUpRequest.email,
+                nickname = appleSignUpRequest.nickname,
+                provider = Provider.APPLE
             )
         )
     }
