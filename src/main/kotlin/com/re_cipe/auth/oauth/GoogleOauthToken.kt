@@ -1,4 +1,4 @@
-package com.re_cipe.auth.ouath
+package com.re_cipe.auth.oauth
 
 data class GoogleOauthToken(
     val access_token: String? = null,

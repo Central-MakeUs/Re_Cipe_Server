@@ -1,8 +1,8 @@
 package com.re_cipe.auth.service
 
 
-import com.re_cipe.auth.ouath.AppleClient
-import com.re_cipe.auth.ouath.GoogleOauthService
+import com.re_cipe.auth.oauth.AppleOAuthUserProvider
+import com.re_cipe.auth.oauth.GoogleOauthService
 import com.re_cipe.auth.ui.dto.*
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
@@ -22,10 +22,11 @@ import org.springframework.transaction.annotation.Transactional
 class AuthService(
     private val memberRepository: MemberRepository,
     private val googleOauthService: GoogleOauthService,
-    private val appleClient: AppleClient,
+    private val appleOAuthUserProvider: AppleOAuthUserProvider,
     private val jwtService: JwtService,
     private val redisService: RedisService
 ) {
+
     @Value("\${jwt.refresh-token-expiry}")
     private val refreshTokenExpiry: Long = 0
 
@@ -58,10 +59,8 @@ class AuthService(
 
     @Transactional
     fun appleSignIn(appleSignInRequest: AppleSignInRequest): AppleSignInResponse {
-        val response: ApplePublicKeyResponse = appleClient.getApplePublicKey()
-        jwtService.getSubjectByAppleToken(appleSignInRequest.idToken, response)
-
-        val isExist = memberRepository.existsByEmail(appleSignInRequest.email)
+        val applePlatformMember = appleOAuthUserProvider.getApplePlatformMember(appleSignInRequest.idToken)
+        val isExist = memberRepository.existsByEmail(applePlatformMember.email)
         if (!isExist) {
             return AppleSignInResponse(false, JwtTokens(accessToken = appleSignInRequest.idToken))
         }
@@ -73,8 +72,11 @@ class AuthService(
 
     @Transactional
     fun appleSignup(appleSignUpRequest: AppleSignUpRequest): JwtTokens {
-        val response: ApplePublicKeyResponse = appleClient.getApplePublicKey()
-        jwtService.getSubjectByAppleToken(appleSignUpRequest.idToken, response)
+        val applePlatformMember = appleOAuthUserProvider.getApplePlatformMember(appleSignUpRequest.idToken)
+        val isExist = memberRepository.existsByEmail(applePlatformMember.email)
+        if (isExist) {
+            return jwtService.issue(applePlatformMember.email)
+        }
         join(appleSignUpRequest)
 
         val tokens = jwtService.issue(appleSignUpRequest.email)

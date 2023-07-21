@@ -1,4 +1,4 @@
-package com.re_cipe.auth.ouath
+package com.re_cipe.auth.oauth
 
 interface GoogleOauthService {
     fun requestToken(authCode: String): String

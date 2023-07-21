@@ -46,6 +46,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: false
   redis:
@@ -69,6 +73,10 @@ jwt:
   refresh-token-expiry: 2592000000
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
 ---
@@ -101,6 +109,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -127,6 +139,10 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
 ---
@@ -159,6 +175,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -186,5 +206,9 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
