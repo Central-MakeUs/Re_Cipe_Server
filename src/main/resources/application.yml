@@ -46,6 +46,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: false
   redis:
@@ -105,6 +109,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -167,6 +175,10 @@ spring:
         token: https://oauth2.googleapis.com/token
         profile: https://www.googleapis.com/oauth2/v3/userinfo
         login: https://accounts.google.com/o/oauth2/v2/auth
+    apple:
+      iss: https://appleid.apple.com
+      client-id: ${oauth2.apple.client_id}
+      nonce: ${oauth2.apple.nonce}
   flyway:
     enabled: true
     baseline-on-migrate: true

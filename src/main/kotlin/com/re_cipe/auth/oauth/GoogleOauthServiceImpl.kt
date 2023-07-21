@@ -1,9 +1,8 @@
-package com.re_cipe.auth.ouath
+package com.re_cipe.auth.oauth
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
-import com.re_cipe.global.util.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -45,7 +44,6 @@ class GoogleOauthServiceImpl(
                 String::class.java
             )
         } catch (e: HttpClientErrorException) {
-            logger().info(e.message)
             throw BusinessException(ErrorCode.OAUTH2_FAIL_EXCEPTION)
         }
         return objectMapper
