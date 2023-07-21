@@ -69,6 +69,10 @@ jwt:
   refresh-token-expiry: 2592000000
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
 ---
@@ -127,6 +131,10 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
 ---
@@ -186,5 +194,9 @@ jwt:
   refresh-token-expiry: ${jwt.refresh.expire}
   access-token-header: Authorization
   refresh-token-header: Refresh-Token
+logging:
+  slack:
+    webhook-uri: ${slack.paid_channel_uri}
+  config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
