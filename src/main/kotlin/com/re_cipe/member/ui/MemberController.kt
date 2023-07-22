@@ -4,10 +4,7 @@ import com.re_cipe.global.annotation.CurrentMember
 import com.re_cipe.global.response.ApiResponse
 import com.re_cipe.member.domain.Member
 import com.re_cipe.member.service.MemberService
-import com.re_cipe.member.ui.dto.MemberResponse
-import com.re_cipe.member.ui.dto.NicknameDuplicationRequest
-import com.re_cipe.member.ui.dto.NicknameDuplicationResponse
-import com.re_cipe.member.ui.dto.SystemNotificationRequest
+import com.re_cipe.member.ui.dto.*
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -45,13 +42,13 @@ class MemberController(
         return ApiResponse.success(memberService.setSystemNotification(member, systemNotificationRequest))
     }
 
-//
-//    @ApiOperation(value = "시스템 알림 설정", notes = "Access Token 필요")
-//    @SecurityRequirement(name = "Authorization")
-//    @GetMapping("/v1/users/marketing-notification")
-//    fun setMarketingNotification(
-//        @CurrentMember member: Member
-//    ): ApiResponse<Boolean> {
-//        return ApiResponse.success(memberService.getOneUser(member))
-//    }
+    @ApiOperation(value = "마케팅 알림 설정", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PutMapping("/v1/users/marketing-notification")
+    fun setMarketingNotification(
+        @CurrentMember member: Member,
+        @RequestBody marketingNotificationRequest: MarketingNotificationRequest
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(memberService.setMarketingNotification(member, marketingNotificationRequest))
+    }
 }

@@ -3,6 +3,7 @@ package com.re_cipe.member.service
 import com.re_cipe.member.domain.Member
 import com.re_cipe.member.domain.Provider
 import com.re_cipe.member.domain.repository.MemberRepository
+import com.re_cipe.member.ui.dto.MarketingNotificationRequest
 import com.re_cipe.member.ui.dto.SystemNotificationRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -41,5 +42,21 @@ class MemberServiceTest {
         //then
         assertEquals(true, result)
         assertEquals(memberRepository.findByEmail("email@naver.com")!!.system_notification, false)
+    }
+
+    @Test
+    @DisplayName("마케팅 알림 설정을 검증한다.")
+    fun setMarketingNotificationTest() {
+        //given
+        val marketingNotificationRequest = MarketingNotificationRequest(false)
+        val member = Member(email = "email@naver.com", nickname = "nick", provider = Provider.GOOGLE)
+        memberRepository.save(member)
+
+        //when
+        val result = memberService.setMarketingNotification(member, marketingNotificationRequest)
+
+        //then
+        assertEquals(true, result)
+        assertEquals(memberRepository.findByEmail("email@naver.com")!!.marketing_notification, false)
     }
 }

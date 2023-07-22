@@ -16,4 +16,11 @@ class MemberRepositoryImpl(entityManager: EntityManager) : MemberRepositoryCusto
             .where(member.id.eq(memberId))
             .execute()
     }
+
+    override fun setMarketingNotification(memberId: Long, notification: Boolean) {
+        queryFactory.update(member)
+            .set(member.marketing_notification, notification)
+            .where(member.id.eq(memberId))
+            .execute()
+    }
 }

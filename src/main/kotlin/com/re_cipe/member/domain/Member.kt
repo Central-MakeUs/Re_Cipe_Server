@@ -20,7 +20,9 @@ class Member constructor(
     @Enumerated(EnumType.STRING)
     val provider: Provider,
 
-    val system_notification: Boolean = true
+    val system_notification: Boolean = true,
+
+    val marketing_notification: Boolean = true
 ) : BaseEntity() {
 
 }

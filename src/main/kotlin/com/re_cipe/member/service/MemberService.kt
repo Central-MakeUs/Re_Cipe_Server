@@ -5,10 +5,7 @@ import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
 import com.re_cipe.member.domain.Member
 import com.re_cipe.member.domain.repository.MemberRepository
-import com.re_cipe.member.ui.dto.MemberResponse
-import com.re_cipe.member.ui.dto.NicknameDuplicationRequest
-import com.re_cipe.member.ui.dto.NicknameDuplicationResponse
-import com.re_cipe.member.ui.dto.SystemNotificationRequest
+import com.re_cipe.member.ui.dto.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -30,6 +27,12 @@ class MemberService(private val memberRepository: MemberRepository) {
     @Transactional
     fun setSystemNotification(member: Member, systemNotificationRequest: SystemNotificationRequest): Boolean {
         memberRepository.setSystemNotification(member.id, systemNotificationRequest.system_notification)
+        return true
+    }
+
+    @Transactional
+    fun setMarketingNotification(member: Member, marketingNotificationRequest: MarketingNotificationRequest): Boolean {
+        memberRepository.setMarketingNotification(member.id, marketingNotificationRequest.marketing_notification)
         return true
     }
 
