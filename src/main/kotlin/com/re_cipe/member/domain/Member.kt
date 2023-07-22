@@ -18,7 +18,9 @@ class Member constructor(
     val nickname: String,
 
     @Enumerated(EnumType.STRING)
-    val provider: Provider
+    val provider: Provider,
+
+    val system_notification: Boolean = true
 ) : BaseEntity() {
 
 }

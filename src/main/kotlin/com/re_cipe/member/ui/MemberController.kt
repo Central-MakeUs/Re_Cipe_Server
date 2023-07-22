@@ -7,6 +7,7 @@ import com.re_cipe.member.service.MemberService
 import com.re_cipe.member.ui.dto.MemberResponse
 import com.re_cipe.member.ui.dto.NicknameDuplicationRequest
 import com.re_cipe.member.ui.dto.NicknameDuplicationResponse
+import com.re_cipe.member.ui.dto.SystemNotificationRequest
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -33,4 +34,24 @@ class MemberController(
     ): ApiResponse<MemberResponse> {
         return ApiResponse.success(memberService.getOneUser(member))
     }
+
+    @ApiOperation(value = "시스템 알림 설정", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PutMapping("/v1/users/system-notification")
+    fun setSystemNotification(
+        @CurrentMember member: Member,
+        @RequestBody systemNotificationRequest: SystemNotificationRequest
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(memberService.setSystemNotification(member, systemNotificationRequest))
+    }
+
+//
+//    @ApiOperation(value = "시스템 알림 설정", notes = "Access Token 필요")
+//    @SecurityRequirement(name = "Authorization")
+//    @GetMapping("/v1/users/marketing-notification")
+//    fun setMarketingNotification(
+//        @CurrentMember member: Member
+//    ): ApiResponse<Boolean> {
+//        return ApiResponse.success(memberService.getOneUser(member))
+//    }
 }

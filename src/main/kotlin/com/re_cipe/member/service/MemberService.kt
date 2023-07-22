@@ -8,6 +8,7 @@ import com.re_cipe.member.domain.repository.MemberRepository
 import com.re_cipe.member.ui.dto.MemberResponse
 import com.re_cipe.member.ui.dto.NicknameDuplicationRequest
 import com.re_cipe.member.ui.dto.NicknameDuplicationResponse
+import com.re_cipe.member.ui.dto.SystemNotificationRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,12 @@ class MemberService(private val memberRepository: MemberRepository) {
 
     fun getOneUser(member: Member): MemberResponse {
         return MemberResponse.of(member)
+    }
+
+    @Transactional
+    fun setSystemNotification(member: Member, systemNotificationRequest: SystemNotificationRequest): Boolean {
+        memberRepository.setSystemNotification(member.id, systemNotificationRequest.system_notification)
+        return true
     }
 
     private fun isValid(nickname: String): Boolean {
