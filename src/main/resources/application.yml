@@ -55,8 +55,8 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: qwer
-    username: 1234
+    password:
+    username:
 aws:
   paramstore:
     enabled: true
