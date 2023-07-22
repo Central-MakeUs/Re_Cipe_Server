@@ -10,6 +10,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 management:
   endpoints:
     web:
@@ -55,8 +59,8 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: qwer
-    username: 1234
+    password:
+    username:
 aws:
   paramstore:
     enabled: true
@@ -65,6 +69,15 @@ aws:
     name: recipe
 cloud:
   aws:
+    credentials:
+      access-key: ${s3.credentials.accesskey}
+      secret-key: ${s3.credentials.secretkey}
+      instanceProfile: true
+    s3:
+      bucket: ${s3.bucket}
+    region:
+      static: ap-northeast-2
+      auto: false
     stack:
       auto: false
 jwt:
@@ -79,72 +92,8 @@ logging:
   config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-    import: 'aws-parameterstore:'
-  jpa:
-    hibernate:
-      ddl-auto: ${jpa.ddl_auto}
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${jdbc.url}
-    username: ${jdbc.username}
-    password: ${jdbc.password}
-    hikari:
-      connection-timeout: 200000
-  OAuth2:
-    google:
-      client_id: ${oauth2.google.client-id}
-      client_secret: ${oauth2.google.client-secret}
-      url:
-        redirect: ${oauth2.google.url.redirect}
-        token: https://oauth2.googleapis.com/token
-        profile: https://www.googleapis.com/oauth2/v3/userinfo
-        login: https://accounts.google.com/o/oauth2/v2/auth
-    apple:
-      iss: https://appleid.apple.com
-      client-id: ${oauth2.apple.client_id}
-      nonce: ${oauth2.apple.nonce}
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-  redis:
-    host: ${redis.host}
-    port: ${redis.port}
-    password: ${redis.password}
-    username: ${redis.username}
-server:
-  port: ${spring.server.port}
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: recipe
-cloud:
-  aws:
-    stack:
-      auto: false
-jwt:
-  secret: ${jwt.secret}
-  access-token-expiry: ${jwt.access.expire}
-  refresh-token-expiry: ${jwt.refresh.expire}
-  access-token-header: Authorization
-  refresh-token-header: Refresh-Token
-logging:
-  slack:
-    webhook-uri: ${slack.paid_channel_uri}
-  config: classpath:logback-spring.xml
-swagger:
-  url: http://localhost:8080
+bucket:
+  domain: ${bucket.domain}
 ---
 spring:
   config:
@@ -212,3 +161,5 @@ logging:
   config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
+bucket:
+  domain: ${bucket.domain}

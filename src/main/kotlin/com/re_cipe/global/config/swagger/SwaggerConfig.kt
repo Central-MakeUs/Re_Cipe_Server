@@ -18,8 +18,9 @@ import org.springframework.util.StringUtils
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.service.Server
+import springfox.documentation.service.*
 import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 
 @Configuration
@@ -32,6 +33,8 @@ class SwaggerConfig {
         .ignoredParameterTypes(AuthenticationPrincipal::class.java, CurrentMember::class.java)
         .servers(serverInfo())
         .useDefaultResponseMessages(true)
+        .securityContexts(listOf(securityContext())) // SecurityContext 설정
+        .securitySchemes(listOf(accessTokenKey())) // ApiKey 설정
         .apiInfo(apiInfo())
         .select()
         .apis(RequestHandlerSelectors.basePackage("com.re_cipe"))
@@ -47,6 +50,22 @@ class SwaggerConfig {
 
     private fun serverInfo(): Server {
         return Server("", baseUrl, "", emptyList(), emptyList())
+    }
+
+    private fun securityContext(): SecurityContext {
+        return SecurityContext.builder()
+            .securityReferences(defaultAuth())
+            .build()
+    }
+
+    private fun defaultAuth(): List<SecurityReference> {
+        val authorizationScope = AuthorizationScope("global", "accessEverything")
+        val authorizationScopes = arrayOf(authorizationScope)
+        return listOf(SecurityReference("Authorization", authorizationScopes))
+    }
+
+    private fun accessTokenKey(): SecurityScheme {
+        return ApiKey("Authorization", "Authorization", "header")
     }
 
     @Bean
