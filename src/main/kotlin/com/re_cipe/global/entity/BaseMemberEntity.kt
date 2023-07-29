@@ -8,11 +8,18 @@ import javax.persistence.*
 
 @MappedSuperclass
 @EntityListeners(value = [AuditingEntityListener::class])
-abstract class BaseEntity {
+abstract class BaseMemberEntity {
     @CreatedDate
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     @LastModifiedDate
     var modifiedAt: LocalDateTime = LocalDateTime.now()
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    var status: EntityStatus = EntityStatus.ACTIVE
+
+    fun softDelete() {
+        this.status = EntityStatus.INACTIVE
+    }
 }
