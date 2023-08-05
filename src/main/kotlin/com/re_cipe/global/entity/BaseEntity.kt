@@ -15,4 +15,11 @@ abstract class BaseEntity {
     @LastModifiedDate
     var modifiedAt: LocalDateTime = LocalDateTime.now()
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    var status: EntityStatus = EntityStatus.ACTIVE
+
+    fun softDelete() {
+        this.status = EntityStatus.INACTIVE
+    }
 }

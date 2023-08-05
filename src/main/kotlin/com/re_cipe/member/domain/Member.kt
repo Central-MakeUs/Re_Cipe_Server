@@ -1,6 +1,6 @@
 package com.re_cipe.member.domain
 
-import com.re_cipe.global.entity.BaseMemberEntity
+import com.re_cipe.global.entity.BaseEntity
 import org.hibernate.annotations.Where
 import javax.persistence.*
 
@@ -23,6 +23,6 @@ class Member constructor(
     val system_notification: Boolean = true,
 
     val marketing_notification: Boolean = true
-) : BaseMemberEntity() {
+) : BaseEntity() {
 
 }
