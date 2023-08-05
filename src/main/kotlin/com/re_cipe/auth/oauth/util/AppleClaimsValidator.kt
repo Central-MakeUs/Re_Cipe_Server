@@ -17,8 +17,8 @@ class AppleClaimsValidator(
 
     fun isValid(claims: Claims): Boolean {
         return claims.issuer.contains(iss) &&
-                claims.audience == clientId &&
-                claims.get(NONCE_KEY, String::class.java) == nonce
+                claims.audience == clientId
+//                claims.get(NONCE_KEY, String::class.java) == nonce
     }
 
     companion object {

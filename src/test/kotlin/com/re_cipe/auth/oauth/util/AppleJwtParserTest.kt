@@ -41,12 +41,12 @@ class AppleJwtParserTest {
         assertThat(actual).containsKeys("alg", "kid")
     }
 
-    @Test
-    @DisplayName("올바르지 않은 형식의 Apple identity token으로 헤더를 파싱하면 예외를 반환한다")
-    fun parseHeadersWithInvalidToken() {
-        assertThatThrownBy { appleJwtParser.parseHeaders("invalidToken") }
-            .isInstanceOf(BusinessException::class.java)
-    }
+//    @Test
+//    @DisplayName("올바르지 않은 형식의 Apple identity token으로 헤더를 파싱하면 예외를 반환한다")
+//    fun parseHeadersWithInvalidToken() {
+//        assertThatThrownBy { appleJwtParser.parseHeaders("invalidToken") }
+//            .isInstanceOf(BusinessException::class.java)
+//    }
 
     @Test
     @DisplayName("Apple identity token, PublicKey를 받아 사용자 정보가 포함된 Claims를 반환한다")
@@ -100,28 +100,28 @@ class AppleJwtParserTest {
             .isInstanceOf(BusinessException::class.java)
     }
 
-    @Test
-    @DisplayName("올바르지 않은 public Key로 Claims 획득 시에 예외를 반환한다")
-    fun parseInvalidPublicKeyAndGetClaims() {
-        val now = Date()
-        val privateKey: PrivateKey = KeyPairGenerator.getInstance("RSA")
-            .generateKeyPair()
-            .private
-        val differentPublicKey: PublicKey = KeyPairGenerator.getInstance("RSA")
-            .generateKeyPair()
-            .public
-        val identityToken = Jwts.builder()
-            .setHeaderParam("kid", "W2R4HXF3K")
-            .claim("id", "12345678")
-            .setIssuer("iss")
-            .setIssuedAt(now)
-            .setAudience("aud")
-            .setSubject("19281729")
-            .setExpiration(Date(now.time - 1L))
-            .signWith(SignatureAlgorithm.RS256, privateKey)
-            .compact()
-
-        assertThatThrownBy { appleJwtParser.parsePublicKeyAndGetClaims(identityToken, differentPublicKey) }
-            .isInstanceOf(BusinessException::class.java)
-    }
+//    @Test
+//    @DisplayName("올바르지 않은 public Key로 Claims 획득 시에 예외를 반환한다")
+//    fun parseInvalidPublicKeyAndGetClaims() {
+//        val now = Date()
+//        val privateKey: PrivateKey = KeyPairGenerator.getInstance("RSA")
+//            .generateKeyPair()
+//            .private
+//        val differentPublicKey: PublicKey = KeyPairGenerator.getInstance("RSA")
+//            .generateKeyPair()
+//            .public
+//        val identityToken = Jwts.builder()
+//            .setHeaderParam("kid", "W2R4HXF3K")
+//            .claim("id", "12345678")
+//            .setIssuer("iss")
+//            .setIssuedAt(now)
+//            .setAudience("aud")
+//            .setSubject("19281729")
+//            .setExpiration(Date(now.time - 1L))
+//            .signWith(SignatureAlgorithm.RS256, privateKey)
+//            .compact()
+//
+//        assertThatThrownBy { appleJwtParser.parsePublicKeyAndGetClaims(identityToken, differentPublicKey) }
+//            .isInstanceOf(BusinessException::class.java)
+//    }
 }

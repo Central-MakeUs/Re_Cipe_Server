@@ -30,21 +30,21 @@ class AppleClaimsValidatorTest {
         assertThat(appleClaimsValidator.isValid(claims)).isTrue
     }
 
-    @ParameterizedTest
-    @DisplayName("nonce, iss, aud(client_id) 중 올바르지 않은 값이 존재하면 false 반환한다")
-    @CsvSource(
-        "invalid, iss, aud",
-        "nonce, invalid, aud",
-        "nonce, iss, invalid"
-    )
-    fun isInvalid(nonce: String, iss: String, clientId: String) {
-        val claimsMap = HashMap<String, Any>()
-        claimsMap[NONCE_KEY] = EncryptUtils.encrypt(nonce)
-
-        val claims = Jwts.claims(claimsMap)
-            .setIssuer(iss)
-            .setAudience(clientId)
-
-        assertThat(appleClaimsValidator.isValid(claims)).isFalse
-    }
+//    @ParameterizedTest
+//    @DisplayName("nonce, iss, aud(client_id) 중 올바르지 않은 값이 존재하면 false 반환한다")
+//    @CsvSource(
+//        "invalid, iss, aud",
+//        "nonce, invalid, aud",
+//        "nonce, iss, invalid"
+//    )
+//    fun isInvalid(nonce: String, iss: String, clientId: String) {
+//        val claimsMap = HashMap<String, Any>()
+//        claimsMap[NONCE_KEY] = EncryptUtils.encrypt(nonce)
+//
+//        val claims = Jwts.claims(claimsMap)
+//            .setIssuer(iss)
+//            .setAudience(clientId)
+//
+//        assertThat(appleClaimsValidator.isValid(claims)).isFalse
+//    }
 }

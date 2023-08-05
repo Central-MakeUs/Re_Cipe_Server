@@ -29,7 +29,7 @@ class AppleOAuthUserProvider(
 
     private fun validateClaims(claims: Claims) {
         if (!appleClaimsValidator.isValid(claims)) {
-            throw BusinessException(ErrorCode.OAUTH2_FAIL_EXCEPTION)
+            throw IllegalStateException("Apple OAuth 로그인 중 validateClaims에 문제가 발생했습니다.")
         }
     }
 }
