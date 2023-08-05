@@ -6,7 +6,5 @@ import javax.validation.constraints.NotBlank
 
 data class AppleSignInRequest(
     @NotBlank
-    val idToken: String,
-
-    val email: String
+    val idToken: String
 )

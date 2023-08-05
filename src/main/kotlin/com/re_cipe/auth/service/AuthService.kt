@@ -65,8 +65,8 @@ class AuthService(
             return AppleSignInResponse(false, JwtTokens(accessToken = appleSignInRequest.idToken))
         }
 
-        val tokens = jwtService.issue(appleSignInRequest.email)
-        storeRefresh(tokens, appleSignInRequest.email)
+        val tokens = jwtService.issue(applePlatformMember.email)
+        storeRefresh(tokens, applePlatformMember.email)
         return AppleSignInResponse(true, tokens);
     }
 
@@ -77,10 +77,10 @@ class AuthService(
         if (isExist) {
             return jwtService.issue(applePlatformMember.email)
         }
-        join(appleSignUpRequest)
+        join(appleSignUpRequest, applePlatformMember.email)
 
-        val tokens = jwtService.issue(appleSignUpRequest.email)
-        storeRefresh(tokens, appleSignUpRequest.email)
+        val tokens = jwtService.issue(applePlatformMember.email)
+        storeRefresh(tokens, applePlatformMember.email)
         return tokens;
     }
 
@@ -125,10 +125,10 @@ class AuthService(
         )
     }
 
-    private fun join(appleSignUpRequest: AppleSignUpRequest) {
+    private fun join(appleSignUpRequest: AppleSignUpRequest, userEmail: String) {
         memberRepository.save(
             Member(
-                email = appleSignUpRequest.email,
+                email = userEmail,
                 nickname = appleSignUpRequest.nickname,
                 provider = Provider.APPLE
             )
