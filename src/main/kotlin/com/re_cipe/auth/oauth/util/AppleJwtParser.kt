@@ -25,7 +25,7 @@ class AppleJwtParser {
 
             return OBJECT_MAPPER.readValue(decodedHeader, object : TypeReference<Map<String, String>>() {})
         } catch (e: Exception) {
-            throw BusinessException(ErrorCode.OAUTH2_FAIL_EXCEPTION)
+            throw IllegalStateException("Apple OAuth 로그인 중 parseHeaders에 문제가 발생했습니다.")
         }
     }
 
@@ -40,7 +40,7 @@ class AppleJwtParser {
         } catch (e: ExpiredJwtException) {
             throw BusinessException(ErrorCode.EXPIRED_JWT)
         } catch (e: Exception) {
-            throw BusinessException(ErrorCode.OAUTH2_FAIL_EXCEPTION)
+            throw IllegalStateException("Apple OAuth 로그인 중 parsePublicKeyAndGetClaims 문제가 발생했습니다.")
         }
     }
 }
