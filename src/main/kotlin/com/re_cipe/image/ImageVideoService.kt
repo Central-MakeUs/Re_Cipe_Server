@@ -25,7 +25,7 @@ class ImageVideoService(
     @Value("\${bucket.domain}")
     private val bucketHost: String? = null
 
-    fun uploadFiles(multipartFile: MultipartFile): String {
+    fun uploadImages(multipartFile: MultipartFile): String {
         val fileName = multipartFile.originalFilename?.let { createFileName(it) }
         val objectMetadata = ObjectMetadata()
         objectMetadata.contentLength = multipartFile.size
@@ -33,7 +33,7 @@ class ImageVideoService(
         try {
             multipartFile.inputStream.use { inputStream ->
                 amazonS3.putObject(
-                    PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    PutObjectRequest(bucket + "/images", fileName, inputStream, objectMetadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead)
                 )
             }
@@ -43,9 +43,29 @@ class ImageVideoService(
             throw BusinessException(ErrorCode.OVER_FILE_UPLOAD_LIMIT)
         }
 
-        return bucketHost + fileName!!
+        return bucketHost + "images/" + fileName!!
     }
 
+    fun uploadVideos(multipartFile: MultipartFile): String {
+        val fileName = multipartFile.originalFilename?.let { createFileName(it) }
+        val objectMetadata = ObjectMetadata()
+        objectMetadata.contentLength = multipartFile.size
+        objectMetadata.contentType = multipartFile.contentType
+        try {
+            multipartFile.inputStream.use { inputStream ->
+                amazonS3.putObject(
+                    PutObjectRequest(bucket + "/videos", fileName, inputStream, objectMetadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
+                )
+            }
+        } catch (e: IOException) {
+            throw BusinessException(ErrorCode.UPLOAD_FILE_FAILURE)
+        } catch (e: MaxUploadSizeExceededException) {
+            throw BusinessException(ErrorCode.OVER_FILE_UPLOAD_LIMIT)
+        }
+
+        return bucketHost + "videos/"+ fileName!!
+    }
 
     private fun createFileName(fileName: String): String {
         return UUID.randomUUID().toString() + getFileExtension(fileName)
