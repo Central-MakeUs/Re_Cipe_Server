@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/auth")
 class AuthController(
     private val authService: AuthService
-) {
+) {//TODO membeId 반환
     @ApiOperation(value = "구글 로그인", notes = "구글 로그인을 진행합니다.")
     @PostMapping("/google/signin")
     fun googleSignIn(
