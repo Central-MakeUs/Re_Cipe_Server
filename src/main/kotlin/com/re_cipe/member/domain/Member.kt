@@ -23,7 +23,7 @@ class Member constructor(
     val system_notification: Boolean = true,
 
     val marketing_notification: Boolean = true
-) : BaseMemberEntity() {
+) : BaseEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
