@@ -112,7 +112,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${jdbc.url}
     username: ${jdbc.username}
-    password: ${jdb c.password}
+    password: ${jdbc.password}
     hikari:
       connection-timeout: 200000
   OAuth2:
