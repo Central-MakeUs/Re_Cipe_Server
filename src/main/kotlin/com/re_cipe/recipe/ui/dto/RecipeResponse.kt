@@ -9,8 +9,9 @@ data class RecipeResponse(
     val recipe_name: String,
     val created_date: LocalDateTime,
     val nickname: String,
-    val rating: Int,
+    val rating: Double,
     val comment_count: Int,
+    val recipe_thumbnail_img: String,
     val is_saved: Boolean = false
 ) {
     companion object {
@@ -23,6 +24,7 @@ data class RecipeResponse(
                 nickname = recipe.writtenBy.nickname,
                 rating = recipe.rating,
                 comment_count = recipe.comments.size,
+                recipe_thumbnail_img = recipe.thumbnail_img,
                 is_saved = true
             )
         }

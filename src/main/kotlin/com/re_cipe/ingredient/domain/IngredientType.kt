@@ -8,5 +8,15 @@ enum class IngredientType {
     DAIRY,
     SAUCE,
     OIL,
-    POWDER
+    POWDER;
+
+    companion object {
+        fun getIngredientType(type: IngredientType): String {
+            return if (type in listOf(VEGETABLE, FRUIT, MEAT, SEAFOOD, DAIRY)) {
+                "INGREDIENTS"
+            } else {
+                "SAUCE"
+            }
+        }
+    }
 }
