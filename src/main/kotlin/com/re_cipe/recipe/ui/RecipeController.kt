@@ -92,4 +92,45 @@ class RecipeController(
     ): ApiResponse<Boolean> {
         return ApiResponse.success(recipeService.deleteMyRecipe(memberId = member.id, recipeId = recipeId))
     }
+
+    @ApiOperation(value = "레시피 저장", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{recipe-id}/save")
+    fun saveRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("recipe-id") recipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.saveRecipe(member = member, recipeId = recipeId))
+    }
+
+    @ApiOperation(value = "레시피 좋아요", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{recipe-id}/like")
+    fun likeRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("recipe-id") recipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.likeRecipe(member = member, recipeId = recipeId))
+    }
+
+    @ApiOperation(value = "레시피 저장 취소", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{recipe-id}/unsave")
+    fun unsaveRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("recipe-id") recipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.unsaveRecipe(member = member, recipeId = recipeId))
+    }
+
+    @ApiOperation(value = "레시피 좋아요 취소", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{recipe-id}/unlike")
+    fun unlikeRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("recipe-id") recipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.unlikeRecipe(member = member, recipeId = recipeId))
+    }
+
 }

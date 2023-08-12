@@ -4,15 +4,15 @@ import com.re_cipe.member.domain.Member
 import javax.persistence.*
 
 @Entity
-class SavedRecipe constructor(
+class LikedRecipe(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "saved_recipe_id")
+    @Column(name = "liked_recipe_id")
     val id: Long = 0L,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    val savedBy: Member,
+    val likedBy: Member,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")

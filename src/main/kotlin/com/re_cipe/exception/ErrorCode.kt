@@ -23,6 +23,11 @@ enum class ErrorCode(
     DIFFERENT_EMAIL_ERROR(HttpStatus.FORBIDDEN, "2007", "요청하신 이메일이 Oauth 요청 이메일과 다릅니다."),
     NO_AUTHENTICATION(HttpStatus.FORBIDDEN, "2008", "요청에 대한 권한이 없습니다."),
 
+    // Recipe
+    NO_RECIPE_FOUND(HttpStatus.NOT_FOUND, "4004", "요청하신 레시피가 존재하지 않습니다."),
+    ALREADY_SAVED_RECIPE(HttpStatus.MULTI_STATUS, "4005", "이미 저장된 레시피입니다."),
+    NO_INGREDIENT_FOUND(HttpStatus.NOT_FOUND, "4006", "요청하신 재료가 없습니다."),
+
     // Image
     UPLOAD_FILE_FAILURE(HttpStatus.BAD_REQUEST, "4002", "이미지 업로드를 실패하였습니다."),
     OVER_FILE_UPLOAD_LIMIT(HttpStatus.BAD_REQUEST, "4003", "최대 용량을 초과한 이미지 입니다."),

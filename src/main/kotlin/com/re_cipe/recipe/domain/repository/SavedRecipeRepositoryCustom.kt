@@ -6,4 +6,5 @@ import org.springframework.data.domain.Slice
 
 interface SavedRecipeRepositoryCustom {
     fun checkMemberSavedRecipe(recipeId: Long, memberId: Long): Boolean
+    fun unsaveRecipeAndMember(recipeId: Long, memberId: Long): Boolean
 }

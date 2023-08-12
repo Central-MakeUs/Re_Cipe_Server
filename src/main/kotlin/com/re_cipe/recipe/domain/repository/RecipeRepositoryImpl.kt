@@ -67,8 +67,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
     override fun findUserSavedRecipes(memberId: Long): List<Recipe> {
         return queryFactory.selectFrom(recipe)
-            .join(savedRecipe)
-            .on(savedRecipe.writtenBy.id.eq(memberId))
+            .innerJoin(savedRecipe)
+            .on(savedRecipe.recipe.id.eq(recipe.id))
+            .where(savedRecipe.savedBy.id.eq(memberId))
             .fetch()
     }
 

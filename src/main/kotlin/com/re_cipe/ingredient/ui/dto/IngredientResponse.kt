@@ -9,7 +9,8 @@ data class IngredientResponse(
     val ingredient_name: String,
     val ingredient_type: String,
     val ingredient_size: Double,
-    val ingredient_unit: UnitEnum
+    val ingredient_unit: UnitEnum,
+    val coupang_url: String
 ) {
     companion object {
         fun of(ingredient: Ingredient, size: Double): IngredientResponse {
@@ -18,7 +19,8 @@ data class IngredientResponse(
                 ingredient_name = ingredient.name,
                 ingredient_type = getIngredientType(ingredient.ingredientType),
                 ingredient_size = size,
-                ingredient_unit = ingredient.ingredientUnitEnum
+                ingredient_unit = ingredient.ingredientUnitEnum,
+                coupang_url = ingredient.coupangUrl
             )
         }
     }

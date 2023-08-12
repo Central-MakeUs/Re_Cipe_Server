@@ -6,7 +6,10 @@ import com.re_cipe.ingredient.domain.RecipeIngredients
 import com.re_cipe.ingredient.domain.repository.IngredientRepository
 import com.re_cipe.ingredient.domain.repository.RecipeIngredientRepository
 import com.re_cipe.member.domain.Member
+import com.re_cipe.recipe.domain.LikedRecipe
 import com.re_cipe.recipe.domain.Recipe
+import com.re_cipe.recipe.domain.SavedRecipe
+import com.re_cipe.recipe.domain.repository.LikedRecipeRepository
 import com.re_cipe.recipe.domain.repository.RecipeRepository
 import com.re_cipe.recipe.domain.repository.SavedRecipeRepository
 import com.re_cipe.recipe.ui.dto.RecipeCreateRequest
@@ -26,7 +29,8 @@ class RecipeService(
     val stageRepository: StageRepository,
     val savedRecipeRepository: SavedRecipeRepository,
     val recipeIngredientRepository: RecipeIngredientRepository,
-    val ingredientRepository: IngredientRepository
+    val ingredientRepository: IngredientRepository,
+    val likedRecipeRepository: LikedRecipeRepository
 ) {
     fun getRecipesByLatest(offset: Int, pageSize: Int): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByLatest(createPageable(offset, pageSize))
@@ -57,7 +61,7 @@ class RecipeService(
 
     fun getRecipeDetail(recipeId: Long, memberId: Long): RecipeDetailResponse {
         return RecipeDetailResponse.of(
-            recipeRepository.findById(recipeId).get(),
+            recipeRepository.findById(recipeId).orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) },
             stageRepository.findAllRecipeStages(recipeId).map { recipeStage -> StageResponse.of(recipeStage) },
             savedRecipeRepository.checkMemberSavedRecipe(recipeId, memberId)
         )
@@ -65,7 +69,8 @@ class RecipeService(
 
     @Transactional
     fun deleteMyRecipe(memberId: Long, recipeId: Long): Boolean {
-        val recipeFound = recipeRepository.findById(recipeId).get()
+        val recipeFound = recipeRepository.findById(recipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
         if (recipeFound.writtenBy.id != memberId) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
@@ -100,7 +105,8 @@ class RecipeService(
         for (ingredientRequest in recipeCreateRequest.ingredients) {
             val recipeIngredients = RecipeIngredients(
                 recipe = recipe,
-                ingredient = ingredientRepository.findById(ingredientRequest.ingredient_id).get(),
+                ingredient = ingredientRepository.findById(ingredientRequest.ingredient_id)
+                    .orElseThrow { BusinessException(ErrorCode.NO_INGREDIENT_FOUND) },
                 ingredientSize = ingredientRequest.ingredient_size
             )
             recipeIngredientRepository.save(recipeIngredients)
@@ -108,4 +114,41 @@ class RecipeService(
         }
         return recipe.id
     }
+
+    @Transactional
+    fun saveRecipe(member: Member, recipeId: Long): Boolean {
+        val recipe = recipeRepository.findById(recipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+
+        if (savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipeId, memberId = member.id)) {
+            throw BusinessException(ErrorCode.ALREADY_SAVED_RECIPE)
+        }
+        savedRecipeRepository.save(SavedRecipe(savedBy = member, recipe = recipe))
+        return true
+    }
+
+    @Transactional
+    fun likeRecipe(member: Member, recipeId: Long): Boolean {
+        val recipe = recipeRepository.findById(recipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        likedRecipeRepository.save(LikedRecipe(likedBy = member, recipe = recipe))
+        return true
+    }
+
+    @Transactional
+    fun unsaveRecipe(member: Member, recipeId: Long): Boolean {
+        val recipe = recipeRepository.findById(recipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        savedRecipeRepository.unsaveRecipeAndMember(recipeId = recipeId, memberId = member.id)
+        return true
+    }
+
+    @Transactional
+    fun unlikeRecipe(member: Member, recipeId: Long): Boolean {
+        val recipe = recipeRepository.findById(recipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        likedRecipeRepository.unlikeRecipeAndMember(memberId = member.id, recipeId = recipeId)
+        return true
+    }
+
 }
