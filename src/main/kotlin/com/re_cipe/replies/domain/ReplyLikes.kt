@@ -2,6 +2,8 @@ package com.re_cipe.replies.domain
 
 import com.re_cipe.comments.domain.Comments
 import com.re_cipe.member.domain.Member
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import javax.persistence.*
 
 @Entity
@@ -17,6 +19,7 @@ class ReplyLikes constructor(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "replies_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     val replies: Replies,
 ) {
 }

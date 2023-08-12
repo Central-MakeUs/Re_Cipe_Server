@@ -11,8 +11,10 @@ class Ingredient constructor(
 
     val name: String,
 
+    @Enumerated(EnumType.STRING)
     val ingredientType: IngredientType,
 
-    val ingredientUnit: Unit
+    @Enumerated(EnumType.STRING)
+    val ingredientUnitEnum: UnitEnum
 ) {
 }

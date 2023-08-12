@@ -21,6 +21,7 @@ enum class ErrorCode(
     EXPIRED_REFRESH_TOKEN(HttpStatus.FORBIDDEN, "2005", "만료된 리프레쉬 토큰입니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.FORBIDDEN, "2006", "유효하지 않는 리프레쉬 토큰입니다."),
     DIFFERENT_EMAIL_ERROR(HttpStatus.FORBIDDEN, "2007", "요청하신 이메일이 Oauth 요청 이메일과 다릅니다."),
+    NO_AUTHENTICATION(HttpStatus.FORBIDDEN, "2008", "요청에 대한 권한이 없습니다."),
 
     // Image
     UPLOAD_FILE_FAILURE(HttpStatus.BAD_REQUEST, "4002", "이미지 업로드를 실패하였습니다."),

@@ -2,6 +2,7 @@ package com.re_cipe.recipe.domain
 
 import com.re_cipe.comments.domain.Comments
 import com.re_cipe.global.entity.BaseEntity
+import com.re_cipe.ingredient.domain.Ingredient
 import com.re_cipe.ingredient.domain.RecipeIngredients
 import com.re_cipe.member.domain.Member
 import com.re_cipe.reviews.domain.Reviews
@@ -23,7 +24,9 @@ class Recipe constructor(
 
     val serving_size: Int,
 
-    var rating: Int = 0,
+    val thumbnail_img: String,
+
+    var rating: Double = 0.0,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -45,6 +48,7 @@ class Recipe constructor(
     fun addReview(reviews: Reviews) {
         val totalScore = rating * this.reviewsList.size
         this.reviewsList.add(reviews)
-        this.rating = ((totalScore + reviews.rating) / this.reviewsList.size)
+        this.rating = (totalScore + reviews.rating) / this.reviewsList.size
     }
+
 }

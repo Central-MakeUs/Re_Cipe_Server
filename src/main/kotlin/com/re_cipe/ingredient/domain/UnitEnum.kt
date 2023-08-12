@@ -1,6 +1,6 @@
 package com.re_cipe.ingredient.domain
 
-enum class Unit {
+enum class UnitEnum {
     // 부피 단위
     ML,
     L,
