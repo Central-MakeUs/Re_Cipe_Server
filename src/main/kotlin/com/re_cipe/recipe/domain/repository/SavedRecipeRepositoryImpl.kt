@@ -13,7 +13,14 @@ class SavedRecipeRepositoryImpl(entityManager: EntityManager) : SavedRecipeRepos
 
     override fun checkMemberSavedRecipe(recipeId: Long, memberId: Long): Boolean {
         return queryFactory.selectFrom(savedRecipe)
-            .where(savedRecipe.recipe.id.eq(recipeId).and(savedRecipe.writtenBy.id.eq(memberId)))
+            .where(savedRecipe.recipe.id.eq(recipeId).and(savedRecipe.savedBy.id.eq(memberId)))
             .fetch().size > 0
+    }
+
+    override fun unsaveRecipeAndMember(recipeId: Long, memberId: Long): Boolean {
+        queryFactory.delete(savedRecipe)
+            .where(savedRecipe.recipe.id.eq(recipeId).and(savedRecipe.savedBy.id.eq(memberId)))
+            .execute()
+        return true
     }
 }
