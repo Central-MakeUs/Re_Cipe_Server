@@ -17,6 +17,7 @@ class Ingredient constructor(
     @Enumerated(EnumType.STRING)
     val ingredientUnitEnum: UnitEnum,
 
+    @Lob
     val coupangUrl: String,
 ) {
 }
