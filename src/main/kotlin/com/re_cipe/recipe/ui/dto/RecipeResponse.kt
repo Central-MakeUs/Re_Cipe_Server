@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 
 data class RecipeResponse(
     val recipe_id: Long,
-    val image_url: String?,
     val recipe_name: String,
     val created_date: LocalDateTime,
     val nickname: String,
@@ -18,7 +17,6 @@ data class RecipeResponse(
         fun of(recipe: Recipe): RecipeResponse {
             return RecipeResponse(
                 recipe_id = recipe.id,
-                image_url = recipe.stages[0].image_url,
                 recipe_name = recipe.name,
                 created_date = recipe.createdAt,
                 nickname = recipe.writtenBy.nickname,

@@ -4,9 +4,7 @@ import com.re_cipe.global.annotation.CurrentMember
 import com.re_cipe.global.response.ApiResponse
 import com.re_cipe.member.domain.Member
 import com.re_cipe.recipe.service.RecipeService
-import com.re_cipe.recipe.ui.dto.RecipeDetailResponse
-import com.re_cipe.recipe.ui.dto.RecipeCreateRequest
-import com.re_cipe.recipe.ui.dto.RecipeResponse
+import com.re_cipe.recipe.ui.dto.*
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.Parameter
@@ -133,4 +131,89 @@ class RecipeController(
         return ApiResponse.success(recipeService.unlikeRecipe(member = member, recipeId = recipeId))
     }
 
+    @ApiOperation(value = "숏폼 레시피 생성. 반환값은 숏폼 레시피 id", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform")
+    fun createShortFormRecipe(
+        @CurrentMember member: Member,
+        @RequestBody shortFormRecipeCreateRequest: ShortFormRecipeCreateRequest
+    ): ApiResponse<Long> {
+        return ApiResponse.success(
+            recipeService.createShortFormRecipe(
+                member = member,
+                shortFormRecipeCreateRequest = shortFormRecipeCreateRequest
+            )
+        )
+    }
+
+    @ApiOperation(value = "숏폼 레시피 조회", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/shortform")
+    fun getShortFormRecipes(
+        @CurrentMember member: Member,
+        @RequestParam(required = false, defaultValue = "0") offset: Int,
+        @RequestParam(required = false, defaultValue = "20") pageSize: Int,
+    ): ApiResponse<Slice<ShortFormSimpleResponse>> {
+        return ApiResponse.success(recipeService.getShortForms(member = member, offset = offset, pageSize = pageSize))
+    }
+
+    @ApiOperation(value = "숏폼레시피 저장", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-recipe-id}/save")
+    fun saveShortFormRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") shortFormRecipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(
+            recipeService.saveShortFormRecipe(
+                member = member,
+                shortFormRecipeId = shortFormRecipeId
+            )
+        )
+    }
+
+    @ApiOperation(value = "숏폼레시피 좋아요", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-recipe-id}/like")
+    fun likeShortFormRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") shortFormRecipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(
+            recipeService.likeShortFormRecipe(
+                member = member,
+                shortFormRecipeId = shortFormRecipeId
+            )
+        )
+    }
+
+    @ApiOperation(value = "숏폼레시피 저장 취소", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-recipe-id}/unsave")
+    fun unsaveShortFormRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") shortFormRecipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(
+            recipeService.unsaveShortFormRecipe(
+                member = member,
+                shortFormRecipeId = shortFormRecipeId
+            )
+        )
+    }
+
+    @ApiOperation(value = "숏폼레시피 좋아요 취소", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-recipe-id}/unlike")
+    fun unlikeShortFormRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") shortFormRecipeId: Long
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(
+            recipeService.unlikeShortFormRecipe(
+                member = member,
+                shortFormRecipeId = shortFormRecipeId
+            )
+        )
+    }
 }

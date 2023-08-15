@@ -21,7 +21,7 @@ class ImageVideoController(
     @SecurityRequirement(name = "Authorization")
     @PostMapping("/upload/image")
     fun uploadImage(
-        @CurrentMember member: Member,
+//        @CurrentMember member: Member,
         @RequestPart("multipartFile") file: MultipartFile
     ): ApiResponse<String> {
         val uploadFiles = imageVideoService.uploadImages(file)
@@ -32,7 +32,7 @@ class ImageVideoController(
     @SecurityRequirement(name = "Authorization")
     @PostMapping("/upload/video")
     fun uploadVideo(
-        @CurrentMember member: Member,
+//        @CurrentMember member: Member,
         @RequestPart("multipartFile") file: MultipartFile
     ): ApiResponse<String> {
         val uploadFiles = imageVideoService.uploadVideos(file)
