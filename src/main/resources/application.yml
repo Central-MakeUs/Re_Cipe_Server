@@ -3,8 +3,7 @@ spring:
     active: local
     group:
       local: console-logging
-      dev: console-logging
-      prod: console-logging
+      prod:
   application:
     name: recipe-backend
   mvc:
@@ -12,8 +11,8 @@ spring:
       matching-strategy: ant_path_matcher
   servlet:
     multipart:
-      max-file-size: 500MB
-      max-request-size: 500MB
+      max-file-size: 1000MB
+      max-request-size: 1000MB
 management:
   endpoints:
     web:
@@ -22,6 +21,8 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+#server:
+#  port: 8081
 ---
 spring:
   config:

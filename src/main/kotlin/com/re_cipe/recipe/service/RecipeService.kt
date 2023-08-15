@@ -3,18 +3,14 @@ package com.re_cipe.recipe.service
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
 import com.re_cipe.ingredient.domain.RecipeIngredients
+import com.re_cipe.ingredient.domain.ShortFormIngredients
 import com.re_cipe.ingredient.domain.repository.IngredientRepository
 import com.re_cipe.ingredient.domain.repository.RecipeIngredientRepository
+import com.re_cipe.ingredient.domain.repository.ShortFormIngredientsRepository
 import com.re_cipe.member.domain.Member
-import com.re_cipe.recipe.domain.LikedRecipe
-import com.re_cipe.recipe.domain.Recipe
-import com.re_cipe.recipe.domain.SavedRecipe
-import com.re_cipe.recipe.domain.repository.LikedRecipeRepository
-import com.re_cipe.recipe.domain.repository.RecipeRepository
-import com.re_cipe.recipe.domain.repository.SavedRecipeRepository
-import com.re_cipe.recipe.ui.dto.RecipeCreateRequest
-import com.re_cipe.recipe.ui.dto.RecipeDetailResponse
-import com.re_cipe.recipe.ui.dto.RecipeResponse
+import com.re_cipe.recipe.domain.*
+import com.re_cipe.recipe.domain.repository.*
+import com.re_cipe.recipe.ui.dto.*
 import com.re_cipe.stage.domain.RecipeStage
 import com.re_cipe.stage.domain.repository.StageRepository
 import com.re_cipe.stage.ui.dto.StageResponse
@@ -30,7 +26,11 @@ class RecipeService(
     val savedRecipeRepository: SavedRecipeRepository,
     val recipeIngredientRepository: RecipeIngredientRepository,
     val ingredientRepository: IngredientRepository,
-    val likedRecipeRepository: LikedRecipeRepository
+    val shortFormRecipeRepository: ShortFormRecipeRepository,
+    val shortFormIngredientsRepository: ShortFormIngredientsRepository,
+    val likedRecipeRepository: LikedRecipeRepository,
+    val savedShortFormRepository: SavedShortFormRepository,
+    val likedShortFormRepository: LikedShortFormRepository
 ) {
     fun getRecipesByLatest(offset: Int, pageSize: Int): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByLatest(createPageable(offset, pageSize))
@@ -139,16 +139,91 @@ class RecipeService(
     fun unsaveRecipe(member: Member, recipeId: Long): Boolean {
         val recipe = recipeRepository.findById(recipeId)
             .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
-        savedRecipeRepository.unsaveRecipeAndMember(recipeId = recipeId, memberId = member.id)
-        return true
+        return savedRecipeRepository.unsaveRecipeAndMember(recipeId = recipeId, memberId = member.id)
     }
 
     @Transactional
     fun unlikeRecipe(member: Member, recipeId: Long): Boolean {
         val recipe = recipeRepository.findById(recipeId)
             .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
-        likedRecipeRepository.unlikeRecipeAndMember(memberId = member.id, recipeId = recipeId)
+        return likedRecipeRepository.unlikeRecipeAndMember(memberId = member.id, recipeId = recipeId)
+    }
+
+    @Transactional
+    fun createShortFormRecipe(member: Member, shortFormRecipeCreateRequest: ShortFormRecipeCreateRequest): Long {
+        val shortFormRecipe = ShortFormRecipe(
+            name = shortFormRecipeCreateRequest.shortform_name,
+            description = shortFormRecipeCreateRequest.description,
+            video_url = shortFormRecipeCreateRequest.video_url,
+            writtenBy = member
+        )
+        shortFormRecipeRepository.save(shortFormRecipe)
+        for (ingredientId: Long in shortFormRecipeCreateRequest.ingredients_ids) {
+            val shortFormIngredients = ShortFormIngredients(
+                shortFormRecipe = shortFormRecipe,
+                ingredient = ingredientRepository.findById(ingredientId).orElseThrow {
+                    BusinessException(ErrorCode.NO_INGREDIENT_FOUND)
+                }
+            )
+            shortFormIngredientsRepository.save(shortFormIngredients)
+        }
+        return shortFormRecipe.id
+    }
+
+    fun getShortForms(member: Member, offset: Int, pageSize: Int): Slice<ShortFormSimpleResponse> {
+        return shortFormRecipeRepository.findShortFormRecipes(createPageable(offset, pageSize))
+            .map { shortFormRecipe ->
+                ShortFormSimpleResponse.of(
+                    shortFormRecipe,
+                    likedShortFormRepository.existsByLikedByAndShortFormRecipe_Id(
+                        shortFormRecipeId = shortFormRecipe.id,
+                        likedBy = member
+                    ),
+                    savedShortFormRepository.existsBySavedByAndShortFormRecipe_Id(
+                        shortFormRecipeId = shortFormRecipe.id,
+                        savedBy = member
+                    )
+                )
+            }
+    }
+
+    @Transactional
+    fun saveShortFormRecipe(member: Member, shortFormRecipeId: Long): Boolean {
+        val shortFormRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+
+        if (savedShortFormRepository.existsBySavedByAndShortFormRecipe_Id(member, shortFormRecipeId)) {
+            throw BusinessException(ErrorCode.ALREADY_SAVED_RECIPE)
+        }
+        savedShortFormRepository.save(SavedShortFormRecipe(savedBy = member, shortFormRecipe = shortFormRecipe))
         return true
     }
 
+    @Transactional
+    fun likeShortFormRecipe(member: Member, shortFormRecipeId: Long): Boolean {
+        val shortFormRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        if (likedShortFormRepository.existsByLikedByAndShortFormRecipe_Id(member, shortFormRecipeId)) {
+            throw BusinessException(ErrorCode.ALREADY_LIKED_RECIPE)
+        }
+        likedShortFormRepository.save(LikedShortFormRecipe(likedBy = member, shortFormRecipe = shortFormRecipe))
+        return true
+    }
+
+    @Transactional
+    fun unsaveShortFormRecipe(member: Member, shortFormRecipeId: Long): Boolean {
+        val shortFormRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        return savedShortFormRepository.unsaveShortFormRecipe(member, shortFormRecipe.id)
+    }
+
+    @Transactional
+    fun unlikeShortFormRecipe(member: Member, shortFormRecipeId: Long): Boolean {
+        val shortFormRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        return likedShortFormRepository.unlikeShortFormRecipeAndMember(
+            memberId = member.id,
+            shortFormRecipeId = shortFormRecipe.id
+        )
+    }
 }

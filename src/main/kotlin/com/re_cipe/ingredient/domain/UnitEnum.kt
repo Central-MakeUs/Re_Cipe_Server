@@ -4,10 +4,10 @@ enum class UnitEnum {
     // 부피 단위
     ML,
     L,
-    TEASPOON, // teaspoon
+    T, // teaspoon
 
     // 무게 단위
-    GRAM,
+    G,
     KG,
     OZ,
 
