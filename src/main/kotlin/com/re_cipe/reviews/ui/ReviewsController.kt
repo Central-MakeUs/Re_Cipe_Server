@@ -25,7 +25,7 @@ class ReviewsController(private val reviewsService: ReviewsService) {
 //    @ApiOperation(value = "내가 작성한 리뷰를 조회한다.")
 //    @GetMapping
 //    fun getMyReviews(
-//    ): ApiResponse<List> {
+//    ): ApiResponse<List<>> {
 //        val recipes = when (sort) {
 //            "latest" -> recipeService.getRecipesByLatest(pageable)
 //            "popular" -> recipeService.getRecipesByPopular(pageable)

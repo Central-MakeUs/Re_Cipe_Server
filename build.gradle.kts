@@ -52,9 +52,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
 
-    // P6SY
-    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6")
-
     // Spring Docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
