@@ -43,7 +43,9 @@ class Recipe constructor(
     val comments: MutableList<Comments> = mutableListOf(),
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL])
-    val reviewsList: MutableList<Reviews> = mutableListOf()
+    val reviewsList: MutableList<Reviews> = mutableListOf(),
+
+    val isDeleted: Boolean = false
 
 ) : BaseEntity() {
     fun addReview(reviews: Reviews) {

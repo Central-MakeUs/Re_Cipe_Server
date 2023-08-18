@@ -36,5 +36,7 @@ class ShortFormRecipe constructor(
 
     @OneToMany(mappedBy = "shortFormRecipe", cascade = [CascadeType.ALL])
     val ingredients: MutableList<ShortFormIngredients> = mutableListOf(),
+
+    val isDeleted: Boolean = false
 ) : BaseEntity() {
 }

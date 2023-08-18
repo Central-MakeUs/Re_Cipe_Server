@@ -32,6 +32,6 @@ class Reviews constructor(
     val writtenBy: Member,
 
     @OneToMany(mappedBy = "reviews", cascade = [CascadeType.ALL])
-    val likes: MutableList<ReviewsLikes> = mutableListOf(),
+    val likes: MutableList<ReviewsLikes> = mutableListOf()
 ) : BaseEntity() {
 }

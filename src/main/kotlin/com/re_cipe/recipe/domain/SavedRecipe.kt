@@ -17,4 +17,6 @@ class SavedRecipe constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     val recipe: Recipe,
+
+    val isDeleted: Boolean = false
 )

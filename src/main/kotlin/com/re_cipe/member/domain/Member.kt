@@ -22,7 +22,9 @@ class Member constructor(
 
     val system_notification: Boolean = true,
 
-    val marketing_notification: Boolean = true
+    val marketing_notification: Boolean = true,
+
+    val isDeleted: Boolean = false
 ) : BaseEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
