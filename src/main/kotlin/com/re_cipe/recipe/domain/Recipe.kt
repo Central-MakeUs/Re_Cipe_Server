@@ -18,6 +18,7 @@ class Recipe constructor(
 
     val name: String,
 
+    @Lob
     val description: String,
 
     val cook_time: Int,

@@ -11,6 +11,7 @@ class ReviewImages constructor(
     @Column(name = "review_images_id")
     val id: Long = 0L,
 
+    @Lob
     val image_url: String?,
 
     @ManyToOne(fetch = FetchType.LAZY)

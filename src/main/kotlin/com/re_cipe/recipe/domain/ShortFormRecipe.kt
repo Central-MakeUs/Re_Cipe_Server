@@ -15,8 +15,10 @@ class ShortFormRecipe constructor(
 
     val name: String,
 
+    @Lob
     val description: String,
 
+    @Lob
     val video_url: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
