@@ -36,6 +36,9 @@ enum class ErrorCode(
     LIKED_ERROR(HttpStatus.BAD_REQUEST, "4010", "요청하신 좋아요 요청이 잘못되었습니다."),
     SAVED_ERROR(HttpStatus.BAD_REQUEST, "4011", "요청하신 저장 요청이 잘못되었습니다."),
 
+    // Keyword
+    KEYWORD_ERROR(HttpStatus.BAD_REQUEST, "4013", "요청하신 검색어가 잘못되었습니다."),
+
     // Image
     UPLOAD_FILE_FAILURE(HttpStatus.BAD_REQUEST, "4002", "이미지 업로드를 실패하였습니다."),
     OVER_FILE_UPLOAD_LIMIT(HttpStatus.BAD_REQUEST, "4003", "최대 용량을 초과한 이미지 입니다."),

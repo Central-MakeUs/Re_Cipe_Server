@@ -17,6 +17,7 @@ class ShortFormComments constructor(
     @Column(name = "shortform_comments_id")
     val id: Long = 0L,
 
+    @Lob
     val content: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

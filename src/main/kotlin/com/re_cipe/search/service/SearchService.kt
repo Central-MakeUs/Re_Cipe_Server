@@ -1,5 +1,7 @@
 package com.re_cipe.search.service
 
+import com.re_cipe.exception.BusinessException
+import com.re_cipe.exception.ErrorCode
 import com.re_cipe.recipe.domain.repository.RecipeRepository
 import com.re_cipe.recipe.domain.repository.ShortFormRecipeRepository
 import com.re_cipe.recipe.ui.dto.RecipeResponse
@@ -41,6 +43,9 @@ class SearchService(
     }
 
     private fun updateKeyword(keyword: String) {
+        if(keyword.length > 10){
+            throw BusinessException(ErrorCode.KEYWORD_ERROR)
+        }
         val keywordList = keywordRepository.findAllByWord(keyword)
         if (keywordList.isEmpty()) {
             keywordRepository.save(Keyword(word = keyword))

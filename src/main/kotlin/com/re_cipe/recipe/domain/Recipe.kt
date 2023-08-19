@@ -25,6 +25,7 @@ class Recipe constructor(
 
     val serving_size: Int,
 
+    @Lob
     val thumbnail_img: String,
 
     var rating: Double = 0.0,

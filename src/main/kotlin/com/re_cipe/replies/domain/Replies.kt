@@ -24,6 +24,7 @@ class Replies constructor(
     @OnDelete(action = OnDeleteAction.CASCADE)
     val writtenBy: Member,
 
+    @Lob
     val content: String,
 
     @OneToMany(mappedBy = "replies", cascade = [CascadeType.ALL])
