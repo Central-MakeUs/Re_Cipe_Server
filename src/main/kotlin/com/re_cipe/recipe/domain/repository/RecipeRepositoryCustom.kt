@@ -12,4 +12,9 @@ interface RecipeRepositoryCustom {
     fun findUserSavedRecipes(memberId: Long): List<Recipe>
     fun findUsersWrittenRecipe(memberId: Long): List<Recipe>
     fun deleteOneRecipe(recipeId: Long)
+    fun searchRecipeByKeyword(keyword: String, pageable: Pageable): Slice<Recipe>
+    fun findRecipeByThemeLivingAlone(pageable: Pageable): Slice<Recipe>
+    fun findRecipeByThemeForDieting(pageable: Pageable): Slice<Recipe>
+    fun findRecipeByThemeBudgetHappiness(pageable: Pageable): Slice<Recipe>
+    fun findRecipeByThemeHousewarming(pageable: Pageable): Slice<Recipe>
 }

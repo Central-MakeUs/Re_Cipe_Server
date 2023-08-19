@@ -20,7 +20,7 @@ class ShortFormCommentRepositoryImpl(entityManager: EntityManager) : ShortFormCo
             .selectFrom(shortFormComments)
             .innerJoin(shortFormRecipe)
             .on(shortFormComments.shortFormRecipe.id.eq(shortFormRecipe.id))
-            .where(shortFormRecipe.id.eq(shortFormId))
+            .where(shortFormRecipe.id.eq(shortFormId).and(shortFormComments.isDeleted.isFalse))
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()
@@ -29,5 +29,13 @@ class ShortFormCommentRepositoryImpl(entityManager: EntityManager) : ShortFormCo
         val hasNext = content.size > pageable.pageSize
 
         return SliceImpl(content, pageRequest, hasNext)
+    }
+
+    override fun deleteComment(commendId: Long): Boolean {
+        queryFactory.update(shortFormComments)
+            .where(shortFormComments.id.eq(commendId))
+            .set(shortFormComments.isDeleted, true)
+            .execute()
+        return true
     }
 }

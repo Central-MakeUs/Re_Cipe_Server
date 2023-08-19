@@ -8,4 +8,7 @@ import org.springframework.data.domain.Slice
 interface ReviewsRepositoryCustom {
     fun findReviewsByLatest(pageable: Pageable, recipeId: Long): Slice<Reviews>
     fun findReviewsByPopular(pageable: Pageable, recipeId: Long): Slice<Reviews>
+    fun findMyReviews(memberId: Long): List<Reviews>
+    fun deleteReview(reviewId: Long): Boolean
+    fun findReviewCountByRating(rating: Int): Int
 }

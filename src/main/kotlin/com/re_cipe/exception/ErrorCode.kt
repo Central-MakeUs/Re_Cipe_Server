@@ -28,7 +28,13 @@ enum class ErrorCode(
     ALREADY_SAVED_RECIPE(HttpStatus.MULTI_STATUS, "4005", "이미 저장된 레시피입니다."),
     NO_INGREDIENT_FOUND(HttpStatus.NOT_FOUND, "4006", "요청하신 재료가 없습니다."),
     ALREADY_LIKED_RECIPE(HttpStatus.MULTI_STATUS, "4005", "이미 좋아요한 레시피입니다."),
+    ALREADY_LIKED_COMMENT(HttpStatus.MULTI_STATUS, "4008", "이미 좋아요한 댓글입니다."),
+    ALREADY_LIKED_REPLY(HttpStatus.MULTI_STATUS, "4009", "이미 좋아요한 대댓글입니다."),
     NO_COMMENT_FOUND(HttpStatus.NOT_FOUND, "4006", "요청하신 댓글이 존재하지 않습니다."),
+    NO_REPLY_FOUND(HttpStatus.NOT_FOUND, "4007", "요청하신 대댓글이 존재하지 않습니다."),
+    NO_REVIEW_FOUND(HttpStatus.NOT_FOUND, "4012", "요청하신 리뷰가 존재하지 않습니다."),
+    LIKED_ERROR(HttpStatus.BAD_REQUEST, "4010", "요청하신 좋아요 요청이 잘못되었습니다."),
+    SAVED_ERROR(HttpStatus.BAD_REQUEST, "4011", "요청하신 저장 요청이 잘못되었습니다."),
 
     // Image
     UPLOAD_FILE_FAILURE(HttpStatus.BAD_REQUEST, "4002", "이미지 업로드를 실패하였습니다."),

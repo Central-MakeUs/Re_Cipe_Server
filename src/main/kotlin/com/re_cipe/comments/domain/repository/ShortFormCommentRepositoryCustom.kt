@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface ShortFormCommentRepositoryCustom{
+interface ShortFormCommentRepositoryCustom {
     fun findCommentsByShortFormId(shortFormId: Long, pageable: Pageable): Slice<ShortFormComments>
+    fun deleteComment(commendId: Long): Boolean
 }

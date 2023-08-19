@@ -15,6 +15,7 @@ class Reviews constructor(
     @Column(name = "reviews_id")
     val id: Long = 0L,
     val rating: Int,
+    @Lob
     val content: String,
 
     @OneToMany(mappedBy = "reviews", cascade = [CascadeType.ALL])

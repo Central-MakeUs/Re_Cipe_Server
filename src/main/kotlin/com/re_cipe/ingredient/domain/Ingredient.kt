@@ -25,10 +25,7 @@ class Ingredient constructor(
 
     val coupangProductName: String,
 
-
     val coupangProductPrice: Int,
-
-    @Lob
-    val coupangProductImg: String
+    val isRocketDelivery: Boolean
 ) {
 }

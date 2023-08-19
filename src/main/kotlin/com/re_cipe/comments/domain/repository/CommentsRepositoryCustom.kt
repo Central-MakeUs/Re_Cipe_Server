@@ -6,4 +6,5 @@ import org.springframework.data.domain.Slice
 
 interface CommentsRepositoryCustom {
     fun findCommentsByRecipeId(recipeId: Long, pageable: Pageable): Slice<Comments>
+    fun deleteComment(commentId: Long): Boolean
 }

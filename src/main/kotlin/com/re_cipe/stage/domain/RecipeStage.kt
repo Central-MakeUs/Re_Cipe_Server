@@ -22,7 +22,5 @@ class RecipeStage constructor(
     @JoinColumn(name = "recipe_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     val recipe: Recipe,
-
-    val isDeleted: Boolean = false
 ) {
 }

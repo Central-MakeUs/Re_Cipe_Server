@@ -22,7 +22,9 @@ data class CommentsResponse(
                 comment_content = comment.content,
                 comment_writtenby = comment.writtenBy.nickname,
                 comment_likes = comment.likes.size,
-                replyList = comment.replyList.stream().map { reply -> ReplyResponse.of(reply, false) }
+                replyList = comment.replyList.stream()
+                    .filter { reply -> !reply.isDeleted }
+                    .map { reply -> ReplyResponse.of(reply, false) }
                     .toList(),
                 is_liked = comment_is_liked,
                 created_at = comment.createdAt
@@ -35,7 +37,9 @@ data class CommentsResponse(
                 comment_content = comment.content,
                 comment_writtenby = comment.writtenBy.nickname,
                 comment_likes = comment.likes.size,
-                replyList = comment.replyList.stream().map { reply -> ReplyResponse.of(reply, false) }
+                replyList = comment.replyList.stream()
+                    .filter { reply -> !reply.isDeleted }
+                    .map { reply -> ReplyResponse.of(reply, false) }
                     .toList(),
                 is_liked = comment_is_liked,
                 created_at = comment.createdAt
