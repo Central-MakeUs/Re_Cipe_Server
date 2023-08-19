@@ -11,7 +11,8 @@ data class RecipeResponse(
     val rating: Double,
     val comment_count: Int,
     val recipe_thumbnail_img: String,
-    val is_saved: Boolean = false
+    val is_saved: Boolean = false,
+    val cook_time: Int
 ) {
     companion object {
         fun of(recipe: Recipe): RecipeResponse {
@@ -23,7 +24,8 @@ data class RecipeResponse(
                 rating = recipe.rating,
                 comment_count = recipe.comments.size,
                 recipe_thumbnail_img = recipe.thumbnail_img,
-                is_saved = true
+                is_saved = true,
+                cook_time = recipe.cook_time
             )
         }
     }

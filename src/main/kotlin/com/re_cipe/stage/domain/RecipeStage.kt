@@ -12,8 +12,10 @@ class RecipeStage constructor(
     @Column(name = "stage_id")
     val id: Long = 0L,
 
+    @Lob
     val image_url: String? = null,
 
+    @Lob
     val stage_description: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

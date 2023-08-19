@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface RepliesLikedRepository : JpaRepository<ReplyLikes, Long> {
     fun existsByLikedByIdAndRepliesId(memberId: Long, replyId: Long): Boolean
+    fun findByLikedByIdAndRepliesId(memberId: Long, replyId: Long): ReplyLikes
 }

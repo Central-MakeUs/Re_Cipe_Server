@@ -20,5 +20,7 @@ class ShortFormIngredients(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_id")
-    val ingredient: Ingredient
+    val ingredient: Ingredient,
+
+    val isDeleted: Boolean = false
 )

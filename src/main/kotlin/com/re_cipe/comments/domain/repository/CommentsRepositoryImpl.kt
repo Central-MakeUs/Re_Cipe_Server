@@ -20,7 +20,7 @@ class CommentsRepositoryImpl(entityManager: EntityManager) : CommentsRepositoryC
             .selectFrom(comments)
             .innerJoin(recipe)
             .on(comments.recipe.id.eq(recipe.id))
-            .where(recipe.id.eq(recipeId))
+            .where(recipe.id.eq(recipeId).and(comments.isDeleted.isFalse))
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()
@@ -29,5 +29,13 @@ class CommentsRepositoryImpl(entityManager: EntityManager) : CommentsRepositoryC
         val hasNext = content.size > pageable.pageSize
 
         return SliceImpl(content, pageRequest, hasNext)
+    }
+
+    override fun deleteComment(commentId: Long): Boolean {
+        queryFactory.update(comments)
+            .where(comments.id.eq(commentId))
+            .set(comments.isDeleted, true)
+            .execute()
+        return true
     }
 }

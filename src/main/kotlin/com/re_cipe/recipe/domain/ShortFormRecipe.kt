@@ -15,8 +15,10 @@ class ShortFormRecipe constructor(
 
     val name: String,
 
+    @Lob
     val description: String,
 
+    @Lob
     val video_url: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,5 +36,7 @@ class ShortFormRecipe constructor(
 
     @OneToMany(mappedBy = "shortFormRecipe", cascade = [CascadeType.ALL])
     val ingredients: MutableList<ShortFormIngredients> = mutableListOf(),
+
+    val isDeleted: Boolean = false
 ) : BaseEntity() {
 }

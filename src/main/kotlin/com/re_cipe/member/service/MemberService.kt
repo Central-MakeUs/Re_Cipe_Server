@@ -37,10 +37,12 @@ class MemberService(private val memberRepository: MemberRepository) {
     }
 
     private fun isValid(nickname: String): Boolean {
-        return nickname.length <= NICKNAME_MAX_LENGTH
+        val regex = Regex("^[가-힣a-zA-Z]*\$") // 한글과 영어만 허용
+        return nickname.matches(regex) && nickname.length <= NICKNAME_MAX_LENGTH
     }
 
+
     companion object {
-        const val NICKNAME_MAX_LENGTH = 15
+        const val NICKNAME_MAX_LENGTH = 10
     }
 }

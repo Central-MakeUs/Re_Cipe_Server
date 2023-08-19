@@ -131,6 +131,9 @@ class RecipeService(
     fun likeRecipe(member: Member, recipeId: Long): Boolean {
         val recipe = recipeRepository.findById(recipeId)
             .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        if (likedRecipeRepository.existsByLikedByIdAndRecipeId(memberId = member.id, recipeId = recipeId)) {
+            throw BusinessException(ErrorCode.ALREADY_LIKED_RECIPE)
+        }
         likedRecipeRepository.save(LikedRecipe(likedBy = member, recipe = recipe))
         return true
     }
@@ -225,5 +228,50 @@ class RecipeService(
             memberId = member.id,
             shortFormRecipeId = shortFormRecipe.id
         )
+    }
+
+    @Transactional
+    fun deleteShortFormRecipe(member: Member, shortFormRecipeId: Long): Boolean {
+        val shortFormRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        return shortFormRecipeRepository.deleteShortFormRecipe(
+            shortFormId = shortFormRecipe.id
+        )
+    }
+
+    fun findShortFormRecipeDetail(member: Member, shortFormRecipeId: Long): ShortFormDetailResponse {
+        val shortformRecipe = shortFormRecipeRepository.findById(shortFormRecipeId)
+            .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
+        return ShortFormDetailResponse.of(
+            shortformRecipe,
+            savedShortFormRepository.existsBySavedByAndShortFormRecipe_Id(
+                shortFormRecipeId = shortFormRecipeId,
+                savedBy = member
+            ),
+            likedShortFormRepository.existsByLikedByAndShortFormRecipe_Id(
+                likedBy = member,
+                shortFormRecipeId = shortFormRecipeId
+            )
+        )
+    }
+
+    fun findRecipeByThemeLivingAlone(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+        return recipeRepository.findRecipeByThemeLivingAlone(createPageable(offset, pageSize))
+            .map { recipe -> RecipeResponse.of(recipe) }
+    }
+
+    fun findRecipeByThemeForDieting(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+        return recipeRepository.findRecipeByThemeForDieting(createPageable(offset, pageSize))
+            .map { recipe -> RecipeResponse.of(recipe) }
+    }
+
+    fun findRecipeByThemeBudgetHappiness(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+        return recipeRepository.findRecipeByThemeBudgetHappiness(createPageable(offset, pageSize))
+            .map { recipe -> RecipeResponse.of(recipe) }
+    }
+
+    fun findRecipeByThemeHousewarming(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+        return recipeRepository.findRecipeByThemeHousewarming(createPageable(offset, pageSize))
+            .map { recipe -> RecipeResponse.of(recipe) }
     }
 }

@@ -19,5 +19,13 @@ class Ingredient constructor(
 
     @Lob
     val coupangUrl: String,
+
+    @Lob
+    val coupangProductImage: String,
+
+    val coupangProductName: String,
+
+    val coupangProductPrice: Int,
+    val isRocketDelivery: Boolean
 ) {
 }

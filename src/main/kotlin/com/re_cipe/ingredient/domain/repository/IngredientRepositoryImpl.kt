@@ -8,4 +8,5 @@ import javax.persistence.EntityManager
 class IngredientRepositoryImpl(entityManager: EntityManager) : IngredientRepositoryCustom {
     private val queryFactory: JPAQueryFactory = JPAQueryFactory(entityManager)
 
+
 }

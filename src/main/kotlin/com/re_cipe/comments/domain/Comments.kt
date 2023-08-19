@@ -23,7 +23,6 @@ class Comments constructor(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     val recipe: Recipe,
 
     @OneToMany(mappedBy = "comment", cascade = [CascadeType.ALL])

@@ -25,7 +25,6 @@ class ShortFormComments constructor(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shortform_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     val shortFormRecipe: ShortFormRecipe,
 
     @OneToMany(mappedBy = "comment", cascade = [CascadeType.ALL])

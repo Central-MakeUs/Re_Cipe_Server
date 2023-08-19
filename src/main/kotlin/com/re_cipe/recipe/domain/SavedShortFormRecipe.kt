@@ -17,4 +17,6 @@ class SavedShortFormRecipe constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shortform_id")
     val shortFormRecipe: ShortFormRecipe,
+
+    val isDeleted: Boolean = false
 )

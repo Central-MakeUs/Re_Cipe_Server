@@ -41,6 +41,15 @@ class CommentController(private val commentService: CommentService) {
         return ApiResponse.success(commentService.createOneComment(recipeId, member, commentCreateRequest))
     }
 
+    @ApiOperation(value = "레시피의 자신 댓글 삭제")
+    @DeleteMapping("/recipe/{comment-id}")
+    fun deleteRecipeComment(
+        @PathVariable("comment-id") commentId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(commentService.deleteComment(commentId, member))
+    }
+
     @ApiOperation(value = "레시피의 댓글 좋아요")
     @GetMapping("/recipe/like/{comment-id}")
     fun likeComment(
@@ -96,5 +105,14 @@ class CommentController(private val commentService: CommentService) {
         @CurrentMember member: Member
     ): ApiResponse<Boolean> {
         return ApiResponse.success(commentService.unlikeShortFormComment(commentId, member))
+    }
+
+    @ApiOperation(value = "숏폼의 자신 댓글 삭제")
+    @DeleteMapping("/shortform/{shortform-comment-id}")
+    fun deleteShortFormComment(
+        @PathVariable("shortform-comment-id") commentId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(commentService.deleteShortFormComment(commentId, member))
     }
 }

@@ -54,10 +54,26 @@ class CommentService(
     }
 
     @Transactional
+    fun deleteComment(commentId: Long, member: Member): Boolean {
+        val comments = commentsRepository.findById(commentId).orElseThrow {
+            BusinessException(ErrorCode.NO_COMMENT_FOUND)
+        }
+        if (comments.writtenBy.id != member.id) {
+            throw BusinessException(ErrorCode.NO_AUTHENTICATION)
+        }
+        commentsRepository.deleteComment(commentId)
+        return true
+    }
+
+    @Transactional
     fun likeComment(commentId: Long, member: Member): Boolean {
         val comment = commentsRepository.findById(commentId)
             .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
+        if (commentLikesRepository.existsByCommentsIdAndLikedById(commentId, memberId = member.id)) {
+            throw BusinessException(ErrorCode.ALREADY_LIKED_COMMENT)
+        }
         val commentLikes = CommentLikes(likedBy = member, comments = comment)
+
         comment.likes.add(commentLikes)
         commentLikesRepository.save(commentLikes)
         return true
@@ -131,6 +147,18 @@ class CommentService(
             .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
         shortFormCommentLikesRepository.delete(commentLikes)
         comment.likes.remove(commentLikes)
+        return true
+    }
+
+    @Transactional
+    fun deleteShortFormComment(commentId: Long, member: Member): Boolean {
+        val comments = shortFormCommentRepository.findById(commentId).orElseThrow {
+            BusinessException(ErrorCode.NO_COMMENT_FOUND)
+        }
+        if (comments.writtenBy.id != member.id) {
+            throw BusinessException(ErrorCode.NO_AUTHENTICATION)
+        }
+        shortFormCommentRepository.deleteComment(commentId)
         return true
     }
 }

@@ -8,12 +8,19 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
 
+import com.re_cipe.recipe.domain.QLikedShortFormRecipe.likedShortFormRecipe
+
 @Repository
 class LikedShortFormRepositoryImpl(entityManager: EntityManager) : LikedShortFormRepositoryCustom {
     private val queryFactory: JPAQueryFactory = JPAQueryFactory(entityManager)
 
     override fun unlikeShortFormRecipeAndMember(memberId: Long, shortFormRecipeId: Long): Boolean {
-        TODO("Not yet implemented")
+        queryFactory.delete(likedShortFormRecipe)
+            .where(
+                likedShortFormRecipe.shortFormRecipe.id.eq(shortFormRecipeId)
+                    .and(likedShortFormRecipe.likedBy.id.eq(memberId))
+            )
+            .execute()
         return true
     }
 }

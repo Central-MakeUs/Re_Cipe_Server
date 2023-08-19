@@ -22,6 +22,8 @@ class RecipeIngredients constructor(
     @JoinColumn(name = "ingredient_id")
     val ingredient: Ingredient,
 
-    val ingredientSize: Double
+    val ingredientSize: Double,
+
+    val isDeleted: Boolean = false
 ) {
 }

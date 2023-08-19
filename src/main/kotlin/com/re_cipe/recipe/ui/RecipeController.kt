@@ -216,4 +216,54 @@ class RecipeController(
             )
         )
     }
+
+    @ApiOperation(value = "나의 숏폼 레시피 삭제", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @DeleteMapping("/shortform/{shortform-recipe-id}")
+    fun deleteMyShortFormRecipe(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") recipeId: Long,
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.deleteShortFormRecipe(member = member, shortFormRecipeId = recipeId))
+    }
+
+    @ApiOperation(value = "숏폼 레시피 상세 조회", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/shortform/detail/{shortform-recipe-id}")
+    fun getShortFormRecipeDetail(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") recipeId: Long,
+    ): ApiResponse<ShortFormDetailResponse> {
+        return ApiResponse.success(
+            recipeService.findShortFormRecipeDetail(
+                shortFormRecipeId = recipeId,
+                member = member
+            )
+        )
+    }
+
+    @ApiOperation(value = "테마별 레시피 검색", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/recipe/theme")
+    fun findRecipeByTheme(
+        @Parameter(
+            name = "themeName",
+            description = "레시피 정렬 방식",
+            example = "LivingAlone",
+            schema = Schema(allowableValues = ["LivingAlone", "ForDieting", "BudgetHappiness", "Housewarming"])
+        )
+        @RequestParam(required = false, defaultValue = "LivingAlone") themaName: String,
+        @RequestParam(required = false, defaultValue = "0") offset: Int,
+        @RequestParam(required = false, defaultValue = "20") pageSize: Int,
+        @CurrentMember member: Member
+    ): ApiResponse<Slice<RecipeResponse>> {
+        val recipes = when (themaName) {
+            "LivingAlone" -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize)
+            "ForDieting" -> recipeService.findRecipeByThemeForDieting(offset, pageSize)
+            "BudgetHappiness" -> recipeService.findRecipeByThemeBudgetHappiness(offset, pageSize)
+            "Housewarming" -> recipeService.findRecipeByThemeHousewarming(offset, pageSize)
+            else -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize)
+        }
+        return ApiResponse.success(recipes)
+    }
 }
