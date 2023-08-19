@@ -15,6 +15,7 @@ class Comments constructor(
     @Column(name = "comments_id")
     val id: Long = 0L,
 
+    @Lob
     val content: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

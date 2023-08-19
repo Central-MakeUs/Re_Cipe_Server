@@ -23,6 +23,7 @@ class Ingredient constructor(
     @Lob
     val coupangProductImage: String,
 
+    @Lob
     val coupangProductName: String,
 
     val coupangProductPrice: Int,
