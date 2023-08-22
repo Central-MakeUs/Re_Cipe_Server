@@ -63,7 +63,8 @@ class RecipeService(
         return RecipeDetailResponse.of(
             recipeRepository.findById(recipeId).orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) },
             stageRepository.findAllRecipeStages(recipeId).map { recipeStage -> StageResponse.of(recipeStage) },
-            savedRecipeRepository.checkMemberSavedRecipe(recipeId, memberId)
+            savedRecipeRepository.checkMemberSavedRecipe(recipeId, memberId),
+            recipeRepository.recommendRecipe(recipeId)
         )
     }
 

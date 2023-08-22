@@ -17,4 +17,5 @@ interface RecipeRepositoryCustom {
     fun findRecipeByThemeForDieting(pageable: Pageable): Slice<Recipe>
     fun findRecipeByThemeBudgetHappiness(pageable: Pageable): Slice<Recipe>
     fun findRecipeByThemeHousewarming(pageable: Pageable): Slice<Recipe>
+    fun recommendRecipe(recipeId: Long): List<Recipe>
 }

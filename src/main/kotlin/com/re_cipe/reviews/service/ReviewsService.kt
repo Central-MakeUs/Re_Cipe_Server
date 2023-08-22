@@ -2,6 +2,7 @@ package com.re_cipe.reviews.service
 
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
+import com.re_cipe.global.util.SlackUtil
 import com.re_cipe.image.ReviewImages
 import com.re_cipe.member.domain.Member
 import com.re_cipe.recipe.domain.repository.RecipeRepository
@@ -22,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional
 class ReviewsService(
     private val reviewsRepository: ReviewsRepository,
     private val recipeRepository: RecipeRepository,
-    private val reviewImagesRepository: ReviewImagesRepository
+    private val reviewImagesRepository: ReviewImagesRepository,
+    private val slackUtil: SlackUtil
 ) {
     fun getReviewsByLatest(pageable: Pageable, recipeId: Long, member: Member): Slice<ReviewResponse> {
 
@@ -86,5 +88,13 @@ class ReviewsService(
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
         return reviewsRepository.deleteReview(review.id)
+    }
+
+    fun reportReview(reviewId: Long, member: Member): Boolean {
+        slackUtil.sendReviewReport(
+            member = member,
+            review = reviewsRepository.findById(reviewId).orElseThrow { BusinessException(ErrorCode.NO_REVIEW_FOUND) })
+        reviewsRepository.deleteReview(reviewId)
+        return true
     }
 }

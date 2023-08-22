@@ -4,6 +4,7 @@ import com.re_cipe.comments.domain.repository.CommentsRepository
 import com.re_cipe.comments.domain.repository.ShortFormCommentRepository
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
+import com.re_cipe.global.util.SlackUtil
 import com.re_cipe.member.domain.Member
 import com.re_cipe.replies.domain.Replies
 import com.re_cipe.replies.domain.ReplyLikes
@@ -25,7 +26,8 @@ class ReplyService(
     val repliesLikedRepository: RepliesLikedRepository,
     val shortFormCommentRepository: ShortFormCommentRepository,
     val shortFormRepliesRepository: ShortFormRepliesRepository,
-    val shortFormRepliesLikedRepository: ShortFormRepliesLikedRepository
+    val shortFormRepliesLikedRepository: ShortFormRepliesLikedRepository,
+    val slackUtil: SlackUtil
 ) {
     fun createOneReply(commentId: Long, member: Member, replyCreateRequest: ReplyCreateRequest): Long {
         val comments = commentRepository.findById(commentId)
@@ -49,9 +51,10 @@ class ReplyService(
         return replyRepository.deleteReply(replyId)
     }
 
+    @Transactional
     fun likeReply(replyId: Long, member: Member): Boolean {
         val reply = replyRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
-        if(repliesLikedRepository.existsByLikedByIdAndRepliesId(memberId = member.id, replyId = replyId)){
+        if (repliesLikedRepository.existsByLikedByIdAndRepliesId(memberId = member.id, replyId = replyId)) {
             throw BusinessException(ErrorCode.ALREADY_LIKED_REPLY)
         }
         val replyLikes = ReplyLikes(likedBy = member, replies = reply)
@@ -60,6 +63,7 @@ class ReplyService(
         return true
     }
 
+    @Transactional
     fun unlikeReply(replyId: Long, member: Member): Boolean {
         val replyLikes = repliesLikedRepository.findByLikedByIdAndRepliesId(member.id, replyId)
         val reply = replyRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
@@ -68,6 +72,17 @@ class ReplyService(
         return true
     }
 
+    @Transactional
+    fun reportReply(replyId: Long, member: Member): Boolean {
+        slackUtil.sendReplyReport(
+            member = member,
+            replies = replyRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) })
+
+        replyRepository.deleteReply(replyId)
+        return true
+    }
+
+    @Transactional
     fun createShortFormReply(commentId: Long, member: Member, replyCreateRequest: ReplyCreateRequest): Long {
         val comments = shortFormCommentRepository.findById(commentId)
             .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
@@ -92,8 +107,9 @@ class ReplyService(
     }
 
     fun likeShortFormReply(replyId: Long, member: Member): Boolean {
-        val reply = shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
-        if(shortFormRepliesLikedRepository.existsByLikedByIdAndRepliesId(memberId = member.id, replyId = replyId)){
+        val reply =
+            shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
+        if (shortFormRepliesLikedRepository.existsByLikedByIdAndRepliesId(memberId = member.id, replyId = replyId)) {
             throw BusinessException(ErrorCode.ALREADY_LIKED_REPLY)
         }
         val replyLikes = ShortFormReplyLikes(likedBy = member, replies = reply)
@@ -104,12 +120,24 @@ class ReplyService(
 
     fun unlikeShortFormReply(replyId: Long, member: Member): Boolean {
         val replyLikes = shortFormRepliesLikedRepository.findByLikedByIdAndRepliesId(member.id, replyId)
-        if(replyLikes == null){
+        if (replyLikes == null) {
             throw BusinessException(ErrorCode.LIKED_ERROR)
         }
-        val reply = shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
+        val reply =
+            shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
         shortFormRepliesLikedRepository.delete(replyLikes)
         reply.likes.remove(replyLikes)
+        return true
+    }
+
+    @Transactional
+    fun reportShortFormReply(replyId: Long, member: Member): Boolean {
+        slackUtil.sendShortFormReplyReport(
+            member = member,
+            replies = shortFormRepliesRepository.findById(replyId)
+                .orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) })
+
+        shortFormRepliesRepository.deleteReply(replyId)
         return true
     }
 }

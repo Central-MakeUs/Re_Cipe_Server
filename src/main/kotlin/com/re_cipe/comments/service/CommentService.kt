@@ -12,6 +12,7 @@ import com.re_cipe.comments.ui.dto.CommentCreateRequest
 import com.re_cipe.comments.ui.dto.CommentsResponse
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
+import com.re_cipe.global.util.SlackUtil
 import com.re_cipe.member.domain.Member
 import com.re_cipe.recipe.domain.repository.RecipeRepository
 import com.re_cipe.recipe.domain.repository.ShortFormRecipeRepository
@@ -30,7 +31,8 @@ class CommentService(
     private val recipeRepository: RecipeRepository,
     private val shortFormCommentRepository: ShortFormCommentRepository,
     private val shortFormCommentLikesRepository: ShortFormCommentLikesRepository,
-    private val shortFormRecipeRepository: ShortFormRecipeRepository
+    private val shortFormRecipeRepository: ShortFormRecipeRepository,
+    private val slackUtil: SlackUtil
 ) {
 
     fun findAllRecipeComments(recipeId: Long, offset: Int, pageSize: Int, member: Member): Slice<CommentsResponse> {
@@ -61,6 +63,17 @@ class CommentService(
         if (comments.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
+        commentsRepository.deleteComment(commentId)
+        return true
+    }
+
+    @Transactional
+    fun reportComment(commentId: Long, member: Member): Boolean {
+        slackUtil.sendCommentReport(
+            comments = commentsRepository.findById(commentId)
+                .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }, member = member
+        )
+
         commentsRepository.deleteComment(commentId)
         return true
     }
@@ -158,6 +171,17 @@ class CommentService(
         if (comments.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
+        shortFormCommentRepository.deleteComment(commentId)
+        return true
+    }
+
+    @Transactional
+    fun reportShortFormComment(commentId: Long, member: Member): Boolean {
+        slackUtil.sendShortFormCommentReport(
+            comments = shortFormCommentRepository.findById(commentId)
+                .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }, member = member
+        )
+
         shortFormCommentRepository.deleteComment(commentId)
         return true
     }
