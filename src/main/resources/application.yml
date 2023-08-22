@@ -90,6 +90,7 @@ jwt:
 logging:
   slack:
     webhook-uri: ${slack.paid_channel_uri}
+    report-uri: ${slack.report_channel_uri}
   config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
@@ -171,6 +172,7 @@ jwt:
 logging:
   slack:
     webhook-uri: ${slack.paid_channel_uri}
+    report-uri: ${slack.report_channel_uri}
   config: classpath:logback-spring.xml
 swagger:
   url: http://localhost:8080
