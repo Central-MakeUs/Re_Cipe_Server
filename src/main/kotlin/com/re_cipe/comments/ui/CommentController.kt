@@ -11,6 +11,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.web.bind.annotation.*
@@ -68,6 +69,16 @@ class CommentController(private val commentService: CommentService) {
         return ApiResponse.success(commentService.unlikeComment(commentId, member))
     }
 
+    @ApiOperation(value = "레시피의 댓글을 신고한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/recipe/{comment-id}/report")
+    fun reportReview(
+        @PathVariable("comment-id") commentId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(commentService.reportComment(commentId = commentId, member = member))
+    }
+
     @ApiOperation(value = "숏폼 레시피에 존재하는 모든 댓글 조회")
     @GetMapping("/shortform/{shortform-id}")
     fun getAllShortFormComments(
@@ -114,5 +125,15 @@ class CommentController(private val commentService: CommentService) {
         @CurrentMember member: Member
     ): ApiResponse<Boolean> {
         return ApiResponse.success(commentService.deleteShortFormComment(commentId, member))
+    }
+
+    @ApiOperation(value = "숏폼레시피의 댓글을 신고한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-comment-id}/report")
+    fun reportShortFormReview(
+        @PathVariable("shortform-comment-id") commentId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(commentService.reportShortFormComment(commentId = commentId, member = member))
     }
 }
