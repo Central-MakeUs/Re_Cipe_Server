@@ -21,6 +21,7 @@ import com.re_cipe.stage.domain.RecipeStage
 import com.re_cipe.stage.domain.repository.StageRepository
 import lombok.RequiredArgsConstructor
 import lombok.extern.slf4j.Slf4j
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
@@ -42,9 +43,10 @@ class DataLoader(
     val reviewsService: ReviewsService,
     val keywordRepository: KeywordRepository
 ) : ApplicationRunner {
-    val dataLoaderOn: Boolean = true
+    @Value("\${dataloader.push_data}")
+    private var dataLoaderOn: Boolean? = null;
     override fun run(args: ApplicationArguments) {
-        if (dataLoaderOn)
+        if (dataLoaderOn == true)
             runDataLoader()
     }
 
