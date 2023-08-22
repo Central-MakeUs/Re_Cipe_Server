@@ -3,6 +3,8 @@ package com.re_cipe.global.util
 import com.re_cipe.comments.domain.Comments
 import com.re_cipe.comments.domain.ShortFormComments
 import com.re_cipe.member.domain.Member
+import com.re_cipe.replies.domain.Replies
+import com.re_cipe.replies.domain.ShortFormReplies
 import com.re_cipe.reviews.domain.Reviews
 import lombok.extern.slf4j.Slf4j
 import net.gpedro.integrations.slack.SlackApi
@@ -47,6 +49,30 @@ class SlackUtil {
                         "\n 신고자 email= " + member.email +
                         "\n 숏폼레시피 댓글= " + comments.content +
                         "\n 숏폼레시피 댓글 id= " + comments.id
+            )
+        )
+    }
+
+    fun sendReplyReport(member: Member, replies: Replies) {
+        val api = SlackApi(slackUrl)
+        api.call(
+            SlackMessage(
+                "신고자 id= " + member.id +
+                        "\n 신고자 email= " + member.email +
+                        "\n 대댓글 = " + replies.content +
+                        "\n 대댓글 id= " + replies.id
+            )
+        )
+    }
+
+    fun sendShortFormReplyReport(member: Member, replies: ShortFormReplies) {
+        val api = SlackApi(slackUrl)
+        api.call(
+            SlackMessage(
+                "신고자 id= " + member.id +
+                        "\n 신고자 email= " + member.email +
+                        "\n 숏폼대댓글 = " + replies.content +
+                        "\n 숏폼대댓글 id= " + replies.id
             )
         )
     }

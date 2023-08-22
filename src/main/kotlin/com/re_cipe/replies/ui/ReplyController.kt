@@ -8,6 +8,7 @@ import com.re_cipe.replies.service.ReplyService
 import com.re_cipe.replies.ui.dto.ReplyCreateRequest
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/api/v1/replies")
@@ -53,6 +54,16 @@ class ReplyController (
         return ApiResponse.success(replyService.unlikeReply(replyId, member))
     }
 
+    @ApiOperation(value = "레시피의 대댓글을 신고한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/recipe/{reply-id}/report")
+    fun reportReply(
+        @PathVariable("reply-id") replyId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(replyService.reportReply(replyId = replyId, member = member))
+    }
+
     @ApiOperation(value = "숏폼 대댓글 등록, 대댓글 id 반환")
     @PostMapping("/shortform/comment/{shortform-comment-id}")
     fun createShortformReply(
@@ -88,5 +99,15 @@ class ReplyController (
         @CurrentMember member: Member,
     ): ApiResponse<Boolean> {
         return ApiResponse.success(replyService.unlikeShortFormReply(replyId, member))
+    }
+
+    @ApiOperation(value = "숏폼레시피의 대댓글을 신고한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/shortform/{shortform-reply-id}/report")
+    fun reportShortFormReply(
+        @PathVariable("shortform-reply-id") replyId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(replyService.reportShortFormReply(replyId = replyId, member = member))
     }
 }
