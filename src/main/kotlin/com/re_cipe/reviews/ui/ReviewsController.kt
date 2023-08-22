@@ -97,4 +97,14 @@ class ReviewsController(private val reviewsService: ReviewsService) {
     ): ApiResponse<Boolean> {
         return ApiResponse.success(reviewsService.deleteReview(reviewId = reviewId, member = member))
     }
+
+    @ApiOperation(value = "리뷰를 신고한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{review-id}/report")
+    fun reportReview(
+        @PathVariable("review-id") reviewId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(reviewsService.reportReview(reviewId = reviewId, member = member))
+    }
 }
