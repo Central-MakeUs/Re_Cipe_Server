@@ -17,10 +17,16 @@ data class RecipeDetailResponse(
     val recipe_thumbnail_img: String?,
     val ingredients: List<IngredientResponse>,
     val stages: List<StageResponse>,
-    val is_saved: Boolean
+    val is_saved: Boolean,
+    val recommendation_recipes: List<RecipeRecommendResponse>
 ) {
     companion object {
-        fun of(recipe: Recipe, stages: List<StageResponse>, is_saved: Boolean): RecipeDetailResponse {
+        fun of(
+            recipe: Recipe,
+            stages: List<StageResponse>,
+            is_saved: Boolean,
+            recommends: List<Recipe>
+        ): RecipeDetailResponse {
             return RecipeDetailResponse(
                 recipe_id = recipe.id,
                 recipe_name = recipe.name,
@@ -38,7 +44,8 @@ data class RecipeDetailResponse(
                     )
                 },
                 stages = stages,
-                is_saved = is_saved
+                is_saved = is_saved,
+                recommendation_recipes = recommends.map { r -> RecipeRecommendResponse.of(r) }
             )
         }
     }

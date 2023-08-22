@@ -1,6 +1,7 @@
 package com.re_cipe.recipe.domain.repository
 
 import com.querydsl.core.types.dsl.BooleanExpression
+import com.querydsl.core.types.dsl.NumberExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.re_cipe.ingredient.domain.IngredientType
 import org.springframework.stereotype.Repository
@@ -199,4 +200,13 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         return SliceImpl(content, pageRequest, hasNext)
     }
+
+    override fun recommendRecipe(recipeId: Long): List<Recipe> {
+        return queryFactory.selectFrom(recipe)
+            .where(recipe.id.ne(recipeId))
+            .orderBy(NumberExpression.random().asc())
+            .limit(3)
+            .fetch()
+    }
+
 }
