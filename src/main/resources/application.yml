@@ -95,6 +95,9 @@ swagger:
   url: http://localhost:8080
 bucket:
   domain: ${bucket.domain}
+
+dataloader:
+  push_data: ${dataloader}
 ---
 spring:
   config:
@@ -173,3 +176,5 @@ swagger:
   url: http://localhost:8080
 bucket:
   domain: ${bucket.domain}
+dataloader:
+  push_data: ${dataloader}
