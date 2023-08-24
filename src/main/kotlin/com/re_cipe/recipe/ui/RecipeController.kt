@@ -154,6 +154,7 @@ class RecipeController(
         @RequestParam(required = false, defaultValue = "0") offset: Int,
         @RequestParam(required = false, defaultValue = "20") pageSize: Int,
     ): ApiResponse<Slice<ShortFormSimpleResponse>> {
+        TODO("상세 조회도 추가")
         return ApiResponse.success(recipeService.getShortForms(member = member, offset = offset, pageSize = pageSize))
     }
 
