@@ -6,6 +6,7 @@ import javax.persistence.EntityManager
 
 import com.re_cipe.reviews.domain.QReviews.reviews
 import com.re_cipe.recipe.domain.QRecipe.recipe
+import com.re_cipe.image.QReviewImages.reviewImages
 import com.re_cipe.reviews.domain.Reviews
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -68,5 +69,12 @@ class ReviewsRepositoryImpl(entityManager: EntityManager) : ReviewsRepositoryCus
         return queryFactory.selectFrom(reviews)
             .where(reviews.rating.eq(rating))
             .fetch().size
+    }
+
+    override fun findAllRecipePhoto(recipeId: Long): List<String> {
+        return queryFactory.select(reviewImages.image_url)
+            .from(reviewImages)
+            .where(reviewImages.reviews.recipe.id.eq(recipeId))
+            .fetch()
     }
 }

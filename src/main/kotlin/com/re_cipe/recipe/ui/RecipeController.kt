@@ -243,6 +243,16 @@ class RecipeController(
         )
     }
 
+    @ApiOperation(value = "숏폼 레시피 관심없음", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/shortform/not-interest/{shortform-recipe-id}")
+    fun notInterestedShortForm(
+        @CurrentMember member: Member,
+        @PathVariable("shortform-recipe-id") recipeId: Long,
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(true)
+    }
+
     @ApiOperation(value = "테마별 레시피 검색", notes = "Access Token 필요")
     @SecurityRequirement(name = "Authorization")
     @GetMapping("/recipe/theme")

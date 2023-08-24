@@ -1,6 +1,8 @@
 package com.re_cipe.recipe.ui.dto
 
+import com.re_cipe.ingredient.ui.dto.IngredientResponse
 import com.re_cipe.recipe.domain.ShortFormRecipe
+import java.time.LocalDateTime
 
 data class ShortFormSimpleResponse(
     val shortform_id: Long,
@@ -13,7 +15,9 @@ data class ShortFormSimpleResponse(
     val saved_count: Int,
     val writtenBy: String,
     val is_saved: Boolean,
-    val is_liked: Boolean
+    val is_liked: Boolean,
+    val ingredients: List<IngredientResponse>,
+    val created_date: LocalDateTime,
 ) {
     companion object {
         fun of(recipe: ShortFormRecipe, is_liked: Boolean, is_saved: Boolean): ShortFormSimpleResponse {
@@ -29,6 +33,13 @@ data class ShortFormSimpleResponse(
                 writtenBy = recipe.writtenBy.nickname,
                 is_saved = is_saved,
                 is_liked = is_liked,
+                created_date = recipe.createdAt,
+                ingredients = recipe.ingredients.map { shortformIngredients ->
+                    IngredientResponse.of(
+                        shortformIngredients.ingredient
+                    )
+                },
+
             )
         }
     }

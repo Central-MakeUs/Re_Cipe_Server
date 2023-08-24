@@ -33,6 +33,7 @@ class SecurityConfig(
                 "/api/v1/auth/apple/signup",
                 "/api/v1/auth/refresh",
                 "/api/v1/users/verify-nickname",
+                "/api/v1/etc/**",
                 "/swagger-ui/index.html"
             )
     }

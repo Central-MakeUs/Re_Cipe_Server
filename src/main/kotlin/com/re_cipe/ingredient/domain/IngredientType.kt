@@ -18,5 +18,19 @@ enum class IngredientType {
                 "SAUCE"
             }
         }
+
+        fun stringToType(type: String): IngredientType {
+            return when (type) {
+                "VEGETABLE" -> VEGETABLE
+                "FRUIT" -> FRUIT
+                "MEAT" -> MEAT
+                "SEAFOOD" -> SEAFOOD
+                "DAIRY" -> DAIRY
+                "SAUCE" -> SAUCE
+                "OIL" -> OIL
+                "POWDER" -> POWDER
+                else -> throw IllegalArgumentException("Invalid ingredient type: $type")
+            }
+        }
     }
 }

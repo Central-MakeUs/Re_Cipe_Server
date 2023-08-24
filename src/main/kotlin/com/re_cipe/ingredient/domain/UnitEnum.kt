@@ -16,5 +16,24 @@ enum class UnitEnum {
     PACK,
     BUNCH,
     CUP,
-    SPOON
+    SPOON;
+
+    companion object {
+        fun stringToEnum(unit: String): UnitEnum {
+            return when (unit) {
+                "ML" -> ML
+                "L" -> L
+                "T" -> T
+                "G" -> G
+                "KG" -> KG
+                "OZ" -> OZ
+                "PIECE" -> PIECE
+                "PACK" -> PACK
+                "BUNCH" -> BUNCH
+                "CUP" -> CUP
+                "SPOON" -> SPOON
+                else -> throw IllegalArgumentException("Invalid unit: $unit")
+            }
+        }
+    }
 }
