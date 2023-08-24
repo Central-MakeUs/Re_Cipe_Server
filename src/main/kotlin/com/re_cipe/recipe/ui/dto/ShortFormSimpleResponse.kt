@@ -5,6 +5,7 @@ import com.re_cipe.recipe.domain.ShortFormRecipe
 data class ShortFormSimpleResponse(
     val shortform_id: Long,
     val video_url: String,
+    val video_time: String,
     val shortform_name: String,
     val shortform_description: String,
     val likes_count: Int,
@@ -19,6 +20,7 @@ data class ShortFormSimpleResponse(
             return ShortFormSimpleResponse(
                 shortform_id = recipe.id,
                 video_url = recipe.video_url,
+                video_time = recipe.video_time,
                 shortform_name = recipe.name,
                 shortform_description = recipe.description,
                 likes_count = recipe.likedList.size,
@@ -26,7 +28,7 @@ data class ShortFormSimpleResponse(
                 saved_count = recipe.savedList.size,
                 writtenBy = recipe.writtenBy.nickname,
                 is_saved = is_saved,
-                is_liked = is_liked
+                is_liked = is_liked,
             )
         }
     }

@@ -575,33 +575,34 @@ class DataLoader(
             recipe1.ingredientList.add(ingredient)
         }
 
-        var shortFormRecipe = ShortFormRecipe(
+        var shortFormRecipe1 = ShortFormRecipe(
             name = "나의 음식 모음기!",
             description = "제가 자취하면서 만들어 먹은 음식들입니다!",
             video_url = "https://d1jg55wkcrciwu.cloudfront.net/videos/testvideo.mp4",
             writtenBy = member1,
+            video_time = "00:06"
         )
-        shortFormRecipe = shortFormRecipeRepository.save(shortFormRecipe)
+        shortFormRecipe1 = shortFormRecipeRepository.save(shortFormRecipe1)
 
         val shortFormIngredients = mutableListOf(
-            ShortFormIngredients(shortFormRecipe = shortFormRecipe, ingredient = ingredients[0]),
-            ShortFormIngredients(shortFormRecipe = shortFormRecipe, ingredient = ingredients[1]),
-            ShortFormIngredients(shortFormRecipe = shortFormRecipe, ingredient = ingredients[2])
+            ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[0]),
+            ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[1]),
+            ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[2])
         )
         shortFormIngredientsRepository.saveAll(shortFormIngredients)
 
         for (shorformIngredient in shortFormIngredients) {
-            shortFormRecipe.ingredients.add(shorformIngredient)
+            shortFormRecipe1.ingredients.add(shorformIngredient)
         }
 
         var shortFormComments = ShortFormComments(
             content = "너무 유익해요!",
             writtenBy = member2,
-            shortFormRecipe = shortFormRecipe
+            shortFormRecipe = shortFormRecipe1
         )
         shortFormComments = shortFormCommentRepository.save(shortFormComments)
 
-        shortFormRecipe.commentList.add(shortFormComments)
+        shortFormRecipe1.commentList.add(shortFormComments)
 
     }
 }

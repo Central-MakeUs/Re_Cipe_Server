@@ -21,6 +21,8 @@ class ShortFormRecipe constructor(
     @Lob
     val video_url: String,
 
+    val video_time: String,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     val writtenBy: Member,

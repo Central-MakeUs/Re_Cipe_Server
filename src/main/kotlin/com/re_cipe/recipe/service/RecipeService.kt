@@ -159,7 +159,8 @@ class RecipeService(
             name = shortFormRecipeCreateRequest.shortform_name,
             description = shortFormRecipeCreateRequest.description,
             video_url = shortFormRecipeCreateRequest.video_url,
-            writtenBy = member
+            writtenBy = member,
+            video_time = shortFormRecipeCreateRequest.video_time
         )
         shortFormRecipeRepository.save(shortFormRecipe)
         for (ingredientId: Long in shortFormRecipeCreateRequest.ingredients_ids) {
