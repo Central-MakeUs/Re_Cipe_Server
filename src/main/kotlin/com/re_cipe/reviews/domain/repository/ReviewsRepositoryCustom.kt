@@ -11,4 +11,5 @@ interface ReviewsRepositoryCustom {
     fun findMyReviews(memberId: Long): List<Reviews>
     fun deleteReview(reviewId: Long): Boolean
     fun findReviewCountByRating(rating: Int): Int
+    fun findAllRecipePhoto(recipeId: Long): List<String>
 }

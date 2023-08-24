@@ -38,6 +38,16 @@ class ReviewsController(private val reviewsService: ReviewsService) {
         return ApiResponse.success(reviewsService.getMyReviews(member))
     }
 
+    @ApiOperation(value = "레시피의 사진들을 모두 조회한다.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/photos/recipe/{recipe-id}")
+    fun getAllRecipeReviewsPhoto(
+        @CurrentMember member: Member,
+        @PathVariable("recipe-id") recipeId: Long
+    ): ApiResponse<List<String>> {
+        return ApiResponse.success(reviewsService.getAllReviewPhoto(recipeId))
+    }
+
     @ApiOperation(value = "레시피의 리뷰 점수들-레시피의 리뷰 상세 페이지 상단", notes = "Access Token 필요")
     @SecurityRequirement(name = "Authorization")
     @GetMapping("/recipe/{recipe-id}/scores")

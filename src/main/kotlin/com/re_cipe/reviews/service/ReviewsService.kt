@@ -97,4 +97,8 @@ class ReviewsService(
         reviewsRepository.deleteReview(reviewId)
         return true
     }
+
+    fun getAllReviewPhoto(recipeId: Long): List<String> {
+        return reviewsRepository.findAllRecipePhoto(recipeId)
+    }
 }
