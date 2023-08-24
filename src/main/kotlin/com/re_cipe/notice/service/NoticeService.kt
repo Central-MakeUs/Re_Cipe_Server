@@ -18,10 +18,12 @@ class NoticeService(val noticeRepository: NoticeRepository, val qnARepository: Q
         return noticeRepository.findAll().map { n -> NoticeResponse.of(n) }
     }
 
+    @Transactional
     fun createNotice(noticeRequest: NoticeRequest): Long {
         return noticeRepository.save(Notice(title = noticeRequest.title, content = noticeRequest.content)).id
     }
 
+    @Transactional
     fun deleteNotice(id: Long): Boolean {
         noticeRepository.deleteById(id)
         return true
@@ -31,10 +33,12 @@ class NoticeService(val noticeRepository: NoticeRepository, val qnARepository: Q
         return qnARepository.findAll().map { n -> QnAResponse.of(n) }
     }
 
+    @Transactional
     fun createQnA(qnARequest: QnARequest): Long {
         return qnARepository.save(QnA(question = qnARequest.question, answer = qnARequest.answer)).id
     }
 
+    @Transactional
     fun deleteQnA(id: Long): Boolean {
         qnARepository.deleteById(id)
         return true

@@ -9,6 +9,10 @@ import com.re_cipe.ingredient.domain.repository.ShortFormIngredientsRepository
 import com.re_cipe.member.domain.Member
 import com.re_cipe.member.domain.Provider
 import com.re_cipe.member.domain.repository.MemberRepository
+import com.re_cipe.notice.domain.Notice
+import com.re_cipe.notice.domain.QnA
+import com.re_cipe.notice.domain.repository.NoticeRepository
+import com.re_cipe.notice.domain.repository.QnARepository
 import com.re_cipe.recipe.domain.Recipe
 import com.re_cipe.recipe.domain.ShortFormRecipe
 import com.re_cipe.recipe.domain.repository.RecipeRepository
@@ -41,7 +45,9 @@ class DataLoader(
     val recipeIngredientRepository: RecipeIngredientRepository,
     val stageRepository: StageRepository,
     val reviewsService: ReviewsService,
-    val keywordRepository: KeywordRepository
+    val keywordRepository: KeywordRepository,
+    val qnARepository: QnARepository,
+    val noticeRepository: NoticeRepository
 ) : ApplicationRunner {
     @Value("\${dataloader.push_data}")
     private var dataLoaderOn: Boolean? = null;
@@ -604,5 +610,13 @@ class DataLoader(
 
         shortFormRecipe1.commentList.add(shortFormComments)
 
+        qnARepository.save(
+            QnA(
+                question = "계정 탈퇴가 안될 때는 어떻게 해야 하나요? ",
+                answer = "계정 탈퇴는 마이페이지>설정>회원탈퇴를 통해 이루어집니다. 해당 방법으로 재시도 한 경우에도 계정 탈퇴 방법을 찾지 못한 경우 고객센터로 연락 바랍니다. "
+            )
+        )
+
+        noticeRepository.save(Notice(title = "Plate 출시 🥳🎉", content = "Plate가 출시되었습니다!"))
     }
 }
