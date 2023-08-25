@@ -43,7 +43,8 @@ class SearchController(
             searchService.findRecipeByKeyword(
                 keyword = keyword,
                 offset = offset,
-                pageSize = pageSize
+                pageSize = pageSize,
+                member = member
             )
         )
     }

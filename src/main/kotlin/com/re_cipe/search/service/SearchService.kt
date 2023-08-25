@@ -2,7 +2,9 @@ package com.re_cipe.search.service
 
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
+import com.re_cipe.member.domain.Member
 import com.re_cipe.recipe.domain.repository.RecipeRepository
+import com.re_cipe.recipe.domain.repository.SavedRecipeRepository
 import com.re_cipe.recipe.domain.repository.ShortFormRecipeRepository
 import com.re_cipe.recipe.ui.dto.RecipeResponse
 import com.re_cipe.recipe.ui.dto.ShortFormSimpleResponse
@@ -20,16 +22,22 @@ import org.springframework.transaction.annotation.Transactional
 class SearchService(
     private val keywordRepository: KeywordRepository,
     private val recipeRepository: RecipeRepository,
-    private val shortFormRecipeRepository: ShortFormRecipeRepository
+    private val shortFormRecipeRepository: ShortFormRecipeRepository,
+    private val savedRecipeRepository: SavedRecipeRepository
 ) {
     fun findPopularKeywords(): List<String> {
         return keywordRepository.findAll().map { keyword -> keyword.word }.subList(0, 10)
     }
 
-    fun findRecipeByKeyword(keyword: String, offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun findRecipeByKeyword(keyword: String, offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         updateKeyword(keyword)
         return recipeRepository.searchRecipeByKeyword(keyword = keyword, createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
     fun findShortformByKeyword(keyword: String, offset: Int, pageSize: Int): Slice<ShortFormSimpleResponse> {
@@ -43,7 +51,7 @@ class SearchService(
     }
 
     private fun updateKeyword(keyword: String) {
-        if(keyword.length > 10){
+        if (keyword.length > 10) {
             throw BusinessException(ErrorCode.KEYWORD_ERROR)
         }
         val keywordList = keywordRepository.findAllByWord(keyword)

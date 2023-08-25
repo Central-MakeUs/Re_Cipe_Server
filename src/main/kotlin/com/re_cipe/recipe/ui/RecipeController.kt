@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.*
 import org.springframework.web.bind.annotation.*
+import kotlin.system.measureNanoTime
 
 @RequestMapping("/api/v1/recipes")
 @RestController
@@ -32,12 +33,13 @@ class RecipeController(
         @RequestParam(required = false, defaultValue = "latest") sort: String,
         @RequestParam(required = false, defaultValue = "0") offset: Int,
         @RequestParam(required = false, defaultValue = "20") pageSize: Int,
+        @CurrentMember member: Member,
     ): ApiResponse<Slice<RecipeResponse>> {
         val recipes = when (sort) {
-            "latest" -> recipeService.getRecipesByLatest(offset, pageSize)
-            "popular" -> recipeService.getRecipesByPopular(offset, pageSize)
-            "shortest" -> recipeService.getRecipesByShortestTime(offset, pageSize)
-            else -> recipeService.getRecipesByLatest(offset, pageSize)
+            "latest" -> recipeService.getRecipesByLatest(offset, pageSize, member = member)
+            "popular" -> recipeService.getRecipesByPopular(offset, pageSize, member)
+            "shortest" -> recipeService.getRecipesByShortestTime(offset, pageSize, member)
+            else -> recipeService.getRecipesByLatest(offset, pageSize, member)
         }
         return ApiResponse.success(recipes)
     }
@@ -154,7 +156,6 @@ class RecipeController(
         @RequestParam(required = false, defaultValue = "0") offset: Int,
         @RequestParam(required = false, defaultValue = "20") pageSize: Int,
     ): ApiResponse<Slice<ShortFormSimpleResponse>> {
-        TODO("상세 조회도 추가")
         return ApiResponse.success(recipeService.getShortForms(member = member, offset = offset, pageSize = pageSize))
     }
 
@@ -269,11 +270,11 @@ class RecipeController(
         @CurrentMember member: Member
     ): ApiResponse<Slice<RecipeResponse>> {
         val recipes = when (themaName) {
-            "LivingAlone" -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize)
-            "ForDieting" -> recipeService.findRecipeByThemeForDieting(offset, pageSize)
-            "BudgetHappiness" -> recipeService.findRecipeByThemeBudgetHappiness(offset, pageSize)
-            "Housewarming" -> recipeService.findRecipeByThemeHousewarming(offset, pageSize)
-            else -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize)
+            "LivingAlone" -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize, member)
+            "ForDieting" -> recipeService.findRecipeByThemeForDieting(offset, pageSize, member)
+            "BudgetHappiness" -> recipeService.findRecipeByThemeBudgetHappiness(offset, pageSize, member)
+            "Housewarming" -> recipeService.findRecipeByThemeHousewarming(offset, pageSize, member)
+            else -> recipeService.findRecipeByThemeLivingAlone(offset, pageSize, member)
         }
         return ApiResponse.success(recipes)
     }
