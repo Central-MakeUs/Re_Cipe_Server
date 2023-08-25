@@ -32,19 +32,34 @@ class RecipeService(
     val savedShortFormRepository: SavedShortFormRepository,
     val likedShortFormRepository: LikedShortFormRepository
 ) {
-    fun getRecipesByLatest(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun getRecipesByLatest(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByLatest(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
-    fun getRecipesByPopular(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun getRecipesByPopular(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByPopular(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
-    fun getRecipesByShortestTime(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun getRecipesByShortestTime(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByShortestTime(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
     private fun createPageable(offset: Int, pageSize: Int): Pageable {
@@ -52,11 +67,21 @@ class RecipeService(
     }
 
     fun findUserSavedRecipe(memberId: Long): List<RecipeResponse> {
-        return recipeRepository.findUserSavedRecipes(memberId).map { recipe: Recipe -> RecipeResponse.of(recipe) }
+        return recipeRepository.findUserSavedRecipes(memberId).map { recipe: Recipe ->
+            RecipeResponse.of(
+                recipe,
+                savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = memberId)
+            )
+        }
     }
 
     fun findMyRecipes(memberId: Long): List<RecipeResponse> {
-        return recipeRepository.findUsersWrittenRecipe(memberId).map { recipe: Recipe -> RecipeResponse.of(recipe) }
+        return recipeRepository.findUsersWrittenRecipe(memberId).map { recipe: Recipe ->
+            RecipeResponse.of(
+                recipe,
+                savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = memberId)
+            )
+        }
     }
 
     fun getRecipeDetail(recipeId: Long, memberId: Long): RecipeDetailResponse {
@@ -257,23 +282,43 @@ class RecipeService(
         )
     }
 
-    fun findRecipeByThemeLivingAlone(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun findRecipeByThemeLivingAlone(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipeByThemeLivingAlone(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
-    fun findRecipeByThemeForDieting(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun findRecipeByThemeForDieting(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipeByThemeForDieting(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
-    fun findRecipeByThemeBudgetHappiness(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun findRecipeByThemeBudgetHappiness(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipeByThemeBudgetHappiness(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 
-    fun findRecipeByThemeHousewarming(offset: Int, pageSize: Int): Slice<RecipeResponse> {
+    fun findRecipeByThemeHousewarming(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipeByThemeHousewarming(createPageable(offset, pageSize))
-            .map { recipe -> RecipeResponse.of(recipe) }
+            .map { recipe ->
+                RecipeResponse.of(
+                    recipe,
+                    savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
+                )
+            }
     }
 }
