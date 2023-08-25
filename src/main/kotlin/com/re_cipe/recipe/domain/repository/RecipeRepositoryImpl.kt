@@ -204,8 +204,8 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
     override fun recommendRecipe(recipeId: Long): List<Recipe> {
         return queryFactory.selectFrom(recipe)
             .where(recipe.id.ne(recipeId))
-            .orderBy(NumberExpression.random().asc())
-            .limit(3)
+            .orderBy(recipe.createdAt.desc())
+            .limit(3L)
             .fetch()
     }
 
