@@ -21,7 +21,7 @@ class Reviews constructor(
     @OneToMany(mappedBy = "reviews", cascade = [CascadeType.ALL])
     val images: MutableList<ReviewImages> = mutableListOf(),
 
-    val isDeleted: Boolean = true,
+    val isDeleted: Boolean = false,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
