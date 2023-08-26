@@ -67,7 +67,7 @@ class ReviewsRepositoryImpl(entityManager: EntityManager) : ReviewsRepositoryCus
 
     override fun findReviewCountByRating(rating: Int): Int {
         return queryFactory.selectFrom(reviews)
-            .where(reviews.rating.eq(rating))
+            .where(reviews.rating.eq(rating).and(reviews.isDeleted.isFalse))
             .fetch().size
     }
 

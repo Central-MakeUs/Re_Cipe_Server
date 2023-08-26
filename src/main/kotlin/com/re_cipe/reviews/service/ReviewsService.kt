@@ -7,7 +7,9 @@ import com.re_cipe.image.ReviewImages
 import com.re_cipe.member.domain.Member
 import com.re_cipe.recipe.domain.repository.RecipeRepository
 import com.re_cipe.reviews.domain.Reviews
+import com.re_cipe.reviews.domain.ReviewsLikes
 import com.re_cipe.reviews.domain.repository.ReviewImagesRepository
+import com.re_cipe.reviews.domain.repository.ReviewLikesRepository
 import com.re_cipe.reviews.domain.repository.ReviewsRepository
 import com.re_cipe.reviews.ui.dto.MyReviewResponse
 import com.re_cipe.reviews.ui.dto.ReviewCreateRequest
@@ -24,7 +26,8 @@ class ReviewsService(
     private val reviewsRepository: ReviewsRepository,
     private val recipeRepository: RecipeRepository,
     private val reviewImagesRepository: ReviewImagesRepository,
-    private val slackUtil: SlackUtil
+    private val slackUtil: SlackUtil,
+    private val reviewLikesRepository: ReviewLikesRepository
 ) {
     fun getReviewsByLatest(pageable: Pageable, recipeId: Long, member: Member): Slice<ReviewResponse> {
 
@@ -90,6 +93,7 @@ class ReviewsService(
         return reviewsRepository.deleteReview(review.id)
     }
 
+    @Transactional
     fun reportReview(reviewId: Long, member: Member): Boolean {
         slackUtil.sendReviewReport(
             member = member,
@@ -100,5 +104,35 @@ class ReviewsService(
 
     fun getAllReviewPhoto(recipeId: Long): List<String> {
         return reviewsRepository.findAllRecipePhoto(recipeId)
+    }
+
+    @Transactional
+    fun likeReview(reviewId: Long, member: Member): Boolean {
+        val review = reviewsRepository.findById(reviewId).orElseThrow { BusinessException(ErrorCode.NO_REVIEW_FOUND) }
+        if (reviewLikesRepository.existsByLikedByIdAndReviewsId(memberId = member.id, reviewId = reviewId)) {
+            throw BusinessException(ErrorCode.LIKED_ERROR)
+        }
+        var reviewsLikes = ReviewsLikes(
+            likedBy = member,
+            reviews = review
+        )
+        reviewsLikes = reviewLikesRepository.save(reviewsLikes)
+
+        review.likes.add(reviewsLikes)
+        return true
+    }
+
+    @Transactional
+    fun unlikeReview(reviewId: Long, member: Member): Boolean {
+        val review = reviewsRepository.findById(reviewId).orElseThrow { BusinessException(ErrorCode.NO_REVIEW_FOUND) }
+        if (!reviewLikesRepository.existsByLikedByIdAndReviewsId(memberId = member.id, reviewId = reviewId)) {
+            throw BusinessException(ErrorCode.LIKED_ERROR)
+        }
+
+        val reviewsLikes =
+            reviewLikesRepository.findByLikedByIdAndReviewsId(memberId = member.id, reviewId = reviewId)
+        review.likes.remove(reviewsLikes)
+        reviewLikesRepository.delete(reviewsLikes)
+        return true
     }
 }
