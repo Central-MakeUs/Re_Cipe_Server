@@ -11,7 +11,8 @@ data class ReviewResponse(
     val review_content: String,
     val modified_at: LocalDateTime,
     val review_images: MutableList<String>,
-    val liked: Boolean
+    val liked: Boolean,
+    val like_count: Int
 ) {
     companion object {
         private fun createReviewTitle(content: String): String {
@@ -30,7 +31,8 @@ data class ReviewResponse(
                 review_content = reviews.content,
                 modified_at = reviews.modifiedAt,
                 review_images = reviewImages.toMutableList(),
-                liked = liked
+                liked = liked,
+                like_count = reviews.likes.size
             )
         }
 

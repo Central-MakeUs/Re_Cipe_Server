@@ -117,4 +117,24 @@ class ReviewsController(private val reviewsService: ReviewsService) {
     ): ApiResponse<Boolean> {
         return ApiResponse.success(reviewsService.reportReview(reviewId = reviewId, member = member))
     }
+
+    @ApiOperation(value = "리뷰 좋아요.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{review-id}/like")
+    fun likeReview(
+        @PathVariable("review-id") reviewId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(reviewsService.likeReview(reviewId = reviewId, member = member))
+    }
+
+    @ApiOperation(value = "리뷰 좋아요 취소.", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/{review-id}/unlike")
+    fun unlikeReview(
+        @PathVariable("review-id") reviewId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(reviewsService.unlikeReview(reviewId = reviewId, member = member))
+    }
 }

@@ -8,7 +8,8 @@ data class MyReviewResponse(
     val review_rating: Int,
     val img_list: List<String>,
     val review_content: String,
-    val written_date: LocalDateTime
+    val written_date: LocalDateTime,
+    val like_count: Int
 ) {
     companion object {
         fun of(reviews: Reviews): MyReviewResponse {
@@ -18,7 +19,8 @@ data class MyReviewResponse(
                 review_rating = reviews.rating,
                 img_list = reviewImages,
                 review_content = reviews.content,
-                written_date = reviews.modifiedAt
+                written_date = reviews.modifiedAt,
+                like_count = reviews.likes.size
             )
         }
 
