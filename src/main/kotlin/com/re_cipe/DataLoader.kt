@@ -590,14 +590,24 @@ class DataLoader(
         )
         shortFormRecipe1 = shortFormRecipeRepository.save(shortFormRecipe1)
 
-        val shortFormIngredients = mutableListOf(
+        var shortFormRecipe2 = ShortFormRecipe(
+            name = "맛있는 레시피 Plate에 다 있다!",
+            description = "맛있는 레시피 Plate에 다 있다! 9월 2일 대개봉.",
+            video_url = "https://d1jg55wkcrciwu.cloudfront.net/videos/test2.mp4",
+            writtenBy = member2,
+            video_time = "00:25"
+        )
+        shortFormRecipe2 = shortFormRecipeRepository.save(shortFormRecipe2)
+
+
+        val shortFormIngredients1 = mutableListOf(
             ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[0]),
             ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[1]),
             ShortFormIngredients(shortFormRecipe = shortFormRecipe1, ingredient = ingredients[2])
         )
-        shortFormIngredientsRepository.saveAll(shortFormIngredients)
+        shortFormIngredientsRepository.saveAll(shortFormIngredients1)
 
-        for (shorformIngredient in shortFormIngredients) {
+        for (shorformIngredient in shortFormIngredients1) {
             shortFormRecipe1.ingredients.add(shorformIngredient)
         }
 
