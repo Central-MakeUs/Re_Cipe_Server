@@ -22,6 +22,7 @@ enum class ErrorCode(
     INVALID_REFRESH_TOKEN(HttpStatus.FORBIDDEN, "2006", "유효하지 않는 리프레쉬 토큰입니다."),
     DIFFERENT_EMAIL_ERROR(HttpStatus.FORBIDDEN, "2007", "요청하신 이메일이 Oauth 요청 이메일과 다릅니다."),
     NO_AUTHENTICATION(HttpStatus.FORBIDDEN, "2008", "요청에 대한 권한이 없습니다."),
+    NICKNAME_DUPLICATION(HttpStatus.BAD_REQUEST, "2009", "존재하는 닉네임입니다."),
 
     // Recipe
     NO_RECIPE_FOUND(HttpStatus.NOT_FOUND, "4004", "요청하신 레시피가 존재하지 않습니다."),

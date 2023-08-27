@@ -23,4 +23,11 @@ class MemberRepositoryImpl(entityManager: EntityManager) : MemberRepositoryCusto
             .where(member.id.eq(memberId))
             .execute()
     }
+
+    override fun setNickname(memberId: Long, nickname: String) {
+        queryFactory.update(member)
+            .set(member.nickname, nickname)
+            .where(member.id.eq(memberId))
+            .execute()
+    }
 }

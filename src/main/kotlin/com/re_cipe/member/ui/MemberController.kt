@@ -51,4 +51,14 @@ class MemberController(
     ): ApiResponse<Boolean> {
         return ApiResponse.success(memberService.setMarketingNotification(member, marketingNotificationRequest))
     }
+
+    @ApiOperation(value = "닉네임 변경", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @PostMapping("/v1/users/change-nickname")
+    fun changeNickname(
+        @CurrentMember member: Member,
+        @RequestBody nicknameChangeRequest: NicknameChangeRequest
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(memberService.changeNickname(nicknameChangeRequest, member))
+    }
 }

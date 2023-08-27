@@ -36,6 +36,18 @@ class MemberService(private val memberRepository: MemberRepository) {
         return true
     }
 
+    @Transactional
+    fun changeNickname(nicknameChangeRequest: NicknameChangeRequest, member: Member): Boolean {
+        if (!isValid(nicknameChangeRequest.nickname)) {
+            throw BusinessException(ErrorCode.INVALID_NICKNAME)
+        }
+        if (memberRepository.existsByNickname(nicknameChangeRequest.nickname)) {
+            throw BusinessException(ErrorCode.NICKNAME_DUPLICATION)
+        }
+        memberRepository.setNickname(memberId = member.id, nickname = nicknameChangeRequest.nickname)
+        return true
+    }
+
     private fun isValid(nickname: String): Boolean {
         val regex = Regex("^[가-힣a-zA-Z]*\$") // 한글과 영어만 허용
         return nickname.matches(regex) && nickname.length <= NICKNAME_MAX_LENGTH
