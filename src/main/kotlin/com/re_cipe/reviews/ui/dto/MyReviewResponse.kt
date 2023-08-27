@@ -4,6 +4,7 @@ import com.re_cipe.reviews.domain.Reviews
 import java.time.LocalDateTime
 
 data class MyReviewResponse(
+    val review_id: Long,
     val recipe_name: String,
     val review_rating: Int,
     val img_list: List<String>,
@@ -15,7 +16,8 @@ data class MyReviewResponse(
         fun of(reviews: Reviews): MyReviewResponse {
             val reviewImages = reviews.images.map { it.image_url ?: "" }
             return MyReviewResponse(
-                recipe_name = "",
+                review_id = reviews.id,
+                recipe_name = reviews.recipe.name,
                 review_rating = reviews.rating,
                 img_list = reviewImages,
                 review_content = reviews.content,

@@ -15,7 +15,7 @@ class Member constructor(
 
     val email: String,
 
-    val nickname: String,
+    var nickname: String,
 
     @Enumerated(EnumType.STRING)
     val provider: Provider,

@@ -53,7 +53,7 @@ class ReviewsRepositoryImpl(entityManager: EntityManager) : ReviewsRepositoryCus
 
     override fun findMyReviews(memberId: Long): List<Reviews> {
         return queryFactory.selectFrom(reviews)
-            .where(reviews.writtenBy.id.eq(memberId).and(reviews.isDeleted.isFalse))
+            .where(reviews.writtenBy.id.eq(memberId).and(reviews.isDeleted.isFalse).and(reviews.recipe.isDeleted.isFalse))
             .fetch()
     }
 
