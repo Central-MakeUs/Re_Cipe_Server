@@ -50,6 +50,10 @@ class AuthService(
     @Transactional
     fun googleSignup(token: String, googleSignUpRequest: GoogleSignUpRequest): JwtTokens {
         val userInfo = googleOauthService.getUserInfo(token)
+        val isExist = memberRepository.existsByEmail(userInfo.email)
+        if (isExist) {
+            return jwtService.issue(userInfo.email)
+        }
         join(email = userInfo.email, googleSignUpRequest = googleSignUpRequest)
 
         val tokens = jwtService.issue(userInfo.email)

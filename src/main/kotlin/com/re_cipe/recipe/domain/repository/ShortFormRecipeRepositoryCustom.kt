@@ -7,7 +7,6 @@ import org.springframework.data.domain.Slice
 
 interface ShortFormRecipeRepositoryCustom {
     fun findShortFormRecipes(pageable: Pageable): Slice<ShortFormRecipe>
-
     fun deleteShortFormRecipe(shortFormId: Long): Boolean
     fun searchRecipeByKeyword(keyword: String, pageable: Pageable): Slice<ShortFormRecipe>
 }

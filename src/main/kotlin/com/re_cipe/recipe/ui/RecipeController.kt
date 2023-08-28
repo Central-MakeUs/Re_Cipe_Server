@@ -278,4 +278,24 @@ class RecipeController(
         }
         return ApiResponse.success(recipes)
     }
+
+    @ApiOperation(value = "레시피 신고", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/recipe/{recipe-id}/report")
+    fun reportRecipe(
+        @PathVariable("recipe-id") recipeId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.reportRecipe(recipeId = recipeId, member = member))
+    }
+
+    @ApiOperation(value = "숏폼레시피 신고", notes = "Access Token 필요")
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping("/shortform/{shortform-recipe-id}/report")
+    fun reportShortFormRecipe(
+        @PathVariable("shortform-recipe-id") recipeId: Long,
+        @CurrentMember member: Member
+    ): ApiResponse<Boolean> {
+        return ApiResponse.success(recipeService.reportShortFormRecipe(shortFormId = recipeId, member = member))
+    }
 }
