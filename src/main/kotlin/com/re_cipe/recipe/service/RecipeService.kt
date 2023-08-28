@@ -2,6 +2,7 @@ package com.re_cipe.recipe.service
 
 import com.re_cipe.exception.BusinessException
 import com.re_cipe.exception.ErrorCode
+import com.re_cipe.global.util.SlackUtil
 import com.re_cipe.ingredient.domain.RecipeIngredients
 import com.re_cipe.ingredient.domain.ShortFormIngredients
 import com.re_cipe.ingredient.domain.repository.IngredientRepository
@@ -30,7 +31,8 @@ class RecipeService(
     val shortFormIngredientsRepository: ShortFormIngredientsRepository,
     val likedRecipeRepository: LikedRecipeRepository,
     val savedShortFormRepository: SavedShortFormRepository,
-    val likedShortFormRepository: LikedShortFormRepository
+    val likedShortFormRepository: LikedShortFormRepository,
+    val slackUtil: SlackUtil
 ) {
     fun getRecipesByLatest(offset: Int, pageSize: Int, member: Member): Slice<RecipeResponse> {
         return recipeRepository.findRecipesByLatest(createPageable(offset, pageSize))
@@ -320,5 +322,27 @@ class RecipeService(
                     savedRecipeRepository.checkMemberSavedRecipe(recipeId = recipe.id, memberId = member.id)
                 )
             }
+    }
+
+    @Transactional
+    fun reportRecipe(recipeId: Long, member: Member): Boolean {
+        slackUtil.sendRecipeReport(
+            member = member,
+            recipe = recipeRepository.findById(recipeId)
+                .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) })
+
+        recipeRepository.deleteOneRecipe(recipeId)
+        return true
+    }
+
+    @Transactional
+    fun reportShortFormRecipe(shortFormId: Long, member: Member): Boolean {
+        slackUtil.sendShortFormRecipeReport(
+            member = member,
+            recipe = shortFormRecipeRepository.findById(shortFormId)
+                .orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) })
+
+        shortFormRecipeRepository.deleteShortFormRecipe(shortFormId = shortFormId)
+        return true
     }
 }
