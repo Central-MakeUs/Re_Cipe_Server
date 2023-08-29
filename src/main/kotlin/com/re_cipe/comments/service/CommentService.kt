@@ -63,17 +63,19 @@ class CommentService(
         if (comments.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
+        comments.recipe.comments.remove(comments)
         commentsRepository.deleteComment(commentId)
         return true
     }
 
     @Transactional
     fun reportComment(commentId: Long, member: Member): Boolean {
+        val comments = commentsRepository.findById(commentId)
+            .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
         slackUtil.sendCommentReport(
-            comments = commentsRepository.findById(commentId)
-                .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }, member = member
+            comments = comments, member = member
         )
-
+        comments.recipe.comments.remove(comments)
         commentsRepository.deleteComment(commentId)
         return true
     }
@@ -171,17 +173,19 @@ class CommentService(
         if (comments.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
+        comments.shortFormRecipe.commentList.remove(comments)
         shortFormCommentRepository.deleteComment(commentId)
         return true
     }
 
     @Transactional
     fun reportShortFormComment(commentId: Long, member: Member): Boolean {
+        val comments = shortFormCommentRepository.findById(commentId)
+            .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
         slackUtil.sendShortFormCommentReport(
-            comments = shortFormCommentRepository.findById(commentId)
-                .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }, member = member
+            comments = comments, member = member
         )
-
+        comments.shortFormRecipe.commentList.remove(comments)
         shortFormCommentRepository.deleteComment(commentId)
         return true
     }
