@@ -29,6 +29,7 @@ class ReplyService(
     val shortFormRepliesLikedRepository: ShortFormRepliesLikedRepository,
     val slackUtil: SlackUtil
 ) {
+    @Transactional
     fun createOneReply(commentId: Long, member: Member, replyCreateRequest: ReplyCreateRequest): Long {
         val comments = commentRepository.findById(commentId)
             .orElseThrow { BusinessException(ErrorCode.NO_COMMENT_FOUND) }
@@ -42,12 +43,13 @@ class ReplyService(
         return replies.id
     }
 
+    @Transactional
     fun deleteReply(replyId: Long, member: Member): Boolean {
         val reply = replyRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
         if (reply.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
-
+        reply.comment.replyList.remove(reply)
         return replyRepository.deleteReply(replyId)
     }
 
@@ -103,7 +105,7 @@ class ReplyService(
         if (reply.writtenBy.id != member.id) {
             throw BusinessException(ErrorCode.NO_AUTHENTICATION)
         }
-
+        reply.comment.replyList.remove(reply)
         return shortFormRepliesRepository.deleteReply(replyId)
     }
 
@@ -135,11 +137,13 @@ class ReplyService(
 
     @Transactional
     fun reportShortFormReply(replyId: Long, member: Member): Boolean {
+        val replies = shortFormRepliesRepository.findById(replyId)
+            .orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
         slackUtil.sendShortFormReplyReport(
             member = member,
-            replies = shortFormRepliesRepository.findById(replyId)
-                .orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) })
-
+            replies = replies
+        )
+        replies.comment.replyList.remove(replies)
         shortFormRepliesRepository.deleteReply(replyId)
         return true
     }
