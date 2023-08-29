@@ -96,6 +96,7 @@ class ReplyService(
         return replies.id
     }
 
+    @Transactional
     fun deleteShortFormReply(replyId: Long, member: Member): Boolean {
         val reply =
             shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
@@ -106,6 +107,7 @@ class ReplyService(
         return shortFormRepliesRepository.deleteReply(replyId)
     }
 
+    @Transactional
     fun likeShortFormReply(replyId: Long, member: Member): Boolean {
         val reply =
             shortFormRepliesRepository.findById(replyId).orElseThrow { BusinessException(ErrorCode.NO_REPLY_FOUND) }
@@ -118,6 +120,7 @@ class ReplyService(
         return true
     }
 
+    @Transactional
     fun unlikeShortFormReply(replyId: Long, member: Member): Boolean {
         val replyLikes = shortFormRepliesLikedRepository.findByLikedByIdAndRepliesId(member.id, replyId)
         if (replyLikes == null) {
