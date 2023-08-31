@@ -108,7 +108,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
         val hasNext = content.size > pageable.pageSize
-
+        if (content.isEmpty()) {
+            return SliceImpl(emptyList(), pageRequest, hasNext)
+        }
         return SliceImpl(content, pageRequest, hasNext)
     }
 
@@ -132,7 +134,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
         val hasNext = content.size > pageable.pageSize
-
+        if (content.isEmpty()) {
+            return SliceImpl(emptyList(), pageRequest, hasNext)
+        }
         return SliceImpl(content, pageRequest, hasNext)
     }
 
@@ -154,7 +158,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
         val hasNext = content.size > pageable.pageSize
-
+        if (content.isEmpty()) {
+            return SliceImpl(emptyList(), pageRequest, hasNext)
+        }
         return SliceImpl(content, pageRequest, hasNext)
     }
 
@@ -175,7 +181,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
         val hasNext = content.size > pageable.pageSize
-
+        if (content.isEmpty()) {
+            return SliceImpl(emptyList(), pageRequest, hasNext)
+        }
         return SliceImpl(content, pageRequest, hasNext)
     }
 
@@ -197,7 +205,9 @@ class RecipeRepositoryImpl(entityManager: EntityManager) : RecipeRepositoryCusto
 
         val pageRequest = PageRequest.of(pageable.pageNumber, pageable.pageSize)
         val hasNext = content.size > pageable.pageSize
-
+        if (content.isEmpty()) {
+            return SliceImpl(emptyList(), pageRequest, hasNext)
+        }
         return SliceImpl(content, pageRequest, hasNext)
     }
 
