@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 class AuthService(
     private val memberRepository: MemberRepository,
     private val googleOauthService: GoogleOauthService,

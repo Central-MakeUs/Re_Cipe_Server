@@ -50,7 +50,8 @@ class SearchService(
         return PageRequest.of(offset, pageSize, Sort.Direction.DESC, "createdAt")
     }
 
-    private fun updateKeyword(keyword: String) {
+    @Transactional
+    fun updateKeyword(keyword: String) {
         if (keyword.length > 10) {
             throw BusinessException(ErrorCode.KEYWORD_ERROR)
         }

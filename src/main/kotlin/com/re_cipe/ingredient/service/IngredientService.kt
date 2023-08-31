@@ -19,6 +19,7 @@ class IngredientService(
         return ingredientRepository.findAll().map { ingredient: Ingredient -> IngredientSimpleResponse.of(ingredient) }
     }
 
+    @Transactional
     fun createIngredient(ingredientRequest: IngredientRequest): Long {
 
         return ingredientRepository.save(
