@@ -10,6 +10,7 @@ data class ShortFormDetailResponse(
     val shortform_recipe_description: String,
     val video_time: String,
     val writtenby: String,
+    val writtenid: Long,
     val created_date: LocalDateTime,
     val video_url: String,
     val ingredients: List<IngredientResponse>,
@@ -27,6 +28,7 @@ data class ShortFormDetailResponse(
                 shortform_recipe_description = recipe.description,
                 video_time = recipe.video_time,
                 writtenby = recipe.writtenBy.nickname,
+                writtenid = recipe.writtenBy.id,
                 created_date = recipe.createdAt,
                 ingredients = recipe.ingredients.map { shortformIngredients ->
                     IngredientResponse.of(
