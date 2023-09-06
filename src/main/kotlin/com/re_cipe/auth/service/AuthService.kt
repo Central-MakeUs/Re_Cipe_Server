@@ -116,6 +116,7 @@ class AuthService(
         val member =
             memberRepository.findById(memberId).orElseThrow { throw BusinessException(ErrorCode.MEMBER_NOT_FOUND) }
         member.softDelete()
+        member.isDeleted = true
         return true
     }
 
