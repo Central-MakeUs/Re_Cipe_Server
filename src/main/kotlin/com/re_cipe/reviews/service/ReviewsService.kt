@@ -53,11 +53,11 @@ class ReviewsService(
     fun getReviewScores(recipeId: Long): ReviewScores {
         val recipe = recipeRepository.findById(recipeId).orElseThrow { BusinessException(ErrorCode.NO_RECIPE_FOUND) }
         return ReviewScores(
-            fivePoint = reviewsRepository.findReviewCountByRating(5),
-            fourPoint = reviewsRepository.findReviewCountByRating(4),
-            threePoint = reviewsRepository.findReviewCountByRating(3),
-            twoPoint = reviewsRepository.findReviewCountByRating(2),
-            onePoint = reviewsRepository.findReviewCountByRating(1),
+            fivePoint = reviewsRepository.findReviewCountByRating(5, recipeId),
+            fourPoint = reviewsRepository.findReviewCountByRating(4, recipeId),
+            threePoint = reviewsRepository.findReviewCountByRating(3, recipeId),
+            twoPoint = reviewsRepository.findReviewCountByRating(2, recipeId),
+            onePoint = reviewsRepository.findReviewCountByRating(1, recipeId),
             recipe.rating
         )
     }
